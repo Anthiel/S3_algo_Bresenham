@@ -100,9 +100,7 @@ void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> 
 
 void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
 
-    QVector<double> listX;
-    QVector<double> listY;
-
+    QVector<double> listX, listY;
     int dx = x2 - x1;
     int dy = y2 - y1;
 
@@ -142,7 +140,6 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
             else // dy == 0
                 for(; x1 <= x2; x1++)
                     addPixel(listX, listY, x1, y1);
-
         }
 
         else if(dx < 0){
@@ -180,7 +177,6 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
         }
     }
     else{ // dx == 0
-        std::cout<<"test \n";
 
         if(dy != 0){
         /*########## VECTEUR VERTICAL ##########*/
