@@ -54,7 +54,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox"/>
+         <widget class="QSpinBox" name="spinBox">
+          <property name="minimum">
+           <number>-99</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_4">
@@ -64,7 +68,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_2"/>
+         <widget class="QSpinBox" name="spinBox_2">
+          <property name="minimum">
+           <number>-99</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -85,7 +93,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_3"/>
+         <widget class="QSpinBox" name="spinBox_3">
+          <property name="minimum">
+           <number>-99</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_6">
@@ -95,7 +107,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_4"/>
+         <widget class="QSpinBox" name="spinBox_4">
+          <property name="minimum">
+           <number>-99</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -103,6 +119,13 @@
        <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>Dessiner droite</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Bresenham</string>
         </property>
        </widget>
       </item>

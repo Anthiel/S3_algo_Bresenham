@@ -8,10 +8,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->plot->xAxis->setLabel("x");
     ui->plot->yAxis->setLabel("y");
-    ui->plot->xAxis->setRange(0, 10);
-    ui->plot->yAxis->setRange(0, 10);
+    ui->plot->xAxis->setRange(-10, 10);
+    ui->plot->yAxis->setRange(-10, 10);
+
+    ui->plot->addGraph(); // la droite entre les deux points
+    ui->plot->addGraph(); // bresenham
+
+    ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black, 1.5), QBrush(Qt::black), 9));
+
+    ui->plot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::red, 1.5), QBrush(Qt::red), 9));
+    ui->plot->graph(1)->setLineStyle(QCPGraph::lsNone);
 }
 
 MainWindow::~MainWindow()
@@ -22,12 +29,175 @@ MainWindow::~MainWindow()
 void MainWindow::drawLineOnPlot(double x1, double y1, double x2, double y2){
 
     QVector<double> X{x1,x2};
-    QVector<double> Y{y1,y2};
+    QVector<double> Y{y1,y2}; 
 
-    ui->plot->addGraph();
     ui->plot->graph(0)->setData(X,Y);
     ui->plot->replot();
 }
+
+void MainWindow::addPixel(QVector<double> &listX, QVector<double> &listY, double x, double y){
+    listX.push_back(x);
+    listY.push_back(y);
+}
+
+void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> &listY, QVector<int> distance,
+                                        int &princValue, int &maxPrincValue, int &otherValue, int ID,
+                                        bool firstOpe, bool secOpe, bool thirdOpe, int operatorChoose){
+
+    /*  ID : Sélection de la valeur principale "princValue" = 0 -> x ; 1 -> y
+     *  Sélection des signes "firstOpe", "secOpe", "thirdOpe" + ou - avec + -> true, - -> false
+     *  la valeur principale est celle avec le test while avec sa valeur max (x2 ou y2 si c'est x1 ou y1)
+     *  operatorChoose permet de choisir entre "<" (0), "<="(1), ">"(2), ">="(3)
+    */
+
+    if(ID < 0 || ID > 1){
+        std::cerr << "processPartOfBresenham : ID supérieur à 1 ou inférieur à 0" << std::endl;
+        return;
+    }
+
+    int err = distance[ID];
+    distance[ID] = err * 2;
+    distance[1-ID] *= 2;
+
+    do{
+        switch(ID){
+            case 0: addPixel(listX, listY, princValue, otherValue); break;
+            case 1: addPixel(listX, listY, otherValue, princValue); break;
+            default: std::cerr << "processPartOfBresenham : ID supérieur à 1 ou inférieur à 0" << std::endl; break;
+        }
+        if(firstOpe) princValue++;
+        else         princValue--;
+
+        if(secOpe) err += distance[1-ID];
+        else       err -= distance[1-ID];
+
+        bool condition = false;
+
+        switch(operatorChoose){
+            case 0: if(err < 0) condition = true; break;
+            case 1: if(err <= 0) condition = true; break;
+            case 2: if(err > 0) condition = true; break;
+            case 3: if(err >= 0) condition = true; break;
+            default: std::cerr << "processPartOfBresenham : operatorChoose supérieur à 3 ou inférieur à 0" << std::endl; break;
+        }
+
+        if(condition){
+
+            if(thirdOpe) otherValue++;
+            else         otherValue--;
+
+            err += distance[ID];
+        }
+
+    }while(princValue != maxPrincValue);
+
+    switch(ID){
+        case 0: addPixel(listX, listY, princValue, otherValue); break;
+        case 1: addPixel(listX, listY, otherValue, princValue); break;
+        default: std::cerr << "processPartOfBresenham : ID supérieur à 1 ou inférieur à 0" << std::endl; break;
+    }
+}
+
+void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
+
+    QVector<double> listX;
+    QVector<double> listY;
+
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+
+    QVector<int> distance{dx, dy};
+
+    if(dx != 0){
+        if(dx > 0){
+            if(dy != 0){
+
+                /*########## 1er CADRAN ##########*/
+                if(dy > 0){
+
+                    /*########## 1er OCTANT ##########*/
+                    if(dx >= dy)
+                        processPartOfBresenham(listX, listY, distance, x1, x2, y1, 0, true, false, true, 0);
+
+                    /*########## 2nd OCTANT ##########*/
+                    else
+                        processPartOfBresenham(listX, listY, distance, y1, y2, x1, 1, true, false, true, 0);
+
+                }
+
+                /*########## 4eme CADRAN ##########*/
+                else{
+
+                    /*########## 8eme OCTANT ##########*/
+                    if(dx >= -dy)
+                        processPartOfBresenham(listX, listY, distance, x1, x2, y1, 0, true, true, false, 0);
+
+                    /*########## 7eme OCTANT ##########*/
+                    else
+                        processPartOfBresenham(listX, listY, distance, y1, y2, x1, 1, false, true, true, 2);
+
+                }
+            }
+            /*########## VECTEUR HORIZONTAL ##########*/
+            else // dy == 0
+                for(; x1 <= x2; x1++)
+                    addPixel(listX, listY, x1, y1);
+
+        }
+
+        else if(dx < 0){
+            if(dy != 0){
+
+                /*########## 2eme CADRAN ##########*/
+                if(dy > 0){
+
+                    /*########## 4eme OCTANT ##########*/
+                    if(-dx >= dy)
+                        processPartOfBresenham(listX, listY, distance, x1, x2, y1, 0, false, true, true, 3);
+
+                    /*########## 3eme OCTANT ##########*/
+                    else
+                        processPartOfBresenham(listX, listY, distance, y1, y2, x1, 1, true, true, false, 1);
+                }
+
+                /*########## 3eme CADRAN ##########*/
+                else{
+                    /*########## 5eme OCTANT ##########*/
+                    if(dx <= dy)
+                        processPartOfBresenham(listX, listY, distance, x1, x2, y1, 0, false, false, false, 3);
+
+                    /*########## 6eme OCTANT ##########*/
+                    else
+                        processPartOfBresenham(listX, listY, distance, y1, y2, x1, 1, false, false, false, 3);
+
+                }
+            }
+
+            /*########## VECTEUR HORIZONTAL ##########*/
+            else //dy == 0
+                for(; x1 >= x2; x1--)
+                    addPixel(listX, listY, x1, y1);
+        }
+    }
+    else{ // dx == 0
+        std::cout<<"test \n";
+
+        if(dy != 0){
+        /*########## VECTEUR VERTICAL ##########*/
+            if(dy > 0)
+                for(; y1 <= y2; y1++)
+                    addPixel(listX, listY, x1, y1);
+             else if(dy < 0)
+                for(; y1 >= y2; y1--)
+                    addPixel(listX, listY, x1, y1);
+        }
+    }
+
+    ui->plot->graph(1)->setData(listX,listY);
+    ui->plot->replot();
+}
+
+
 
 
 /* SLOT de Qt */
@@ -55,5 +225,9 @@ void MainWindow::on_spinBox_4_valueChanged(const QString &arg1)
 void MainWindow::on_pushButton_clicked()
 {
     drawLineOnPlot(x1, y1, x2, y2);
+}
 
+void MainWindow::on_pushButton_2_clicked()
+{
+    drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
 }
