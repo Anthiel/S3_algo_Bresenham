@@ -19,6 +19,7 @@ public:
     ~MainWindow();
 
     void drawLineOnPlot(double x1, double y1, double x2, double y2);
+    void resetBresenham();
 
     void processPartOfBresenham(QVector<double> &listX, QVector<double> &listY, QVector<int> distance,
                                             int &princValue, int &maxPrincValue, int &otherValue, int ID,
@@ -31,6 +32,8 @@ public:
     int x1 = 0, y1 = 0; // premier point
     int x2 = 0, y2 = 0; // deuxieme point
 
+    int etapeMaxBresenham = 0;
+    int etape = 0;
 
 
 private slots:
@@ -45,6 +48,12 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_EtapePrec_clicked();
+
+    void on_EtapeSuiv_clicked();
+
+    void on_supprBresenham_clicked();
 
 private:
     Ui::MainWindow *ui;

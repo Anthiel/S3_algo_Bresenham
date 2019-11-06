@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot->addGraph(); // la droite entre les deux points
     ui->plot->addGraph(); // bresenham
 
-    ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black, 1.5), QBrush(Qt::black), 9));
+    ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black, 3.0), QBrush(Qt::black), 9));
 
     ui->plot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::red, 1.5), QBrush(Qt::red), 9));
     ui->plot->graph(1)->setLineStyle(QCPGraph::lsNone);
@@ -32,6 +32,14 @@ void MainWindow::drawLineOnPlot(double x1, double y1, double x2, double y2){
     QVector<double> Y{y1,y2}; 
 
     ui->plot->graph(0)->setData(X,Y);
+    ui->plot->replot();
+}
+
+void MainWindow::resetBresenham(){
+    ui->plot->graph(1)->data()->clear();
+    etapeMaxBresenham = 0;
+    etape = 0;
+
     ui->plot->replot();
 }
 
@@ -58,6 +66,8 @@ void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> 
     int err = distance[ID];
     distance[ID] = err * 2;
     distance[1-ID] *= 2;
+
+    etape = 1;
 
     do{
         switch(ID){
@@ -88,8 +98,11 @@ void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> 
 
             err += distance[ID];
         }
+        etape++;
 
-    }while(princValue != maxPrincValue);
+    }while(princValue != maxPrincValue && etape < etapeMaxBresenham);
+
+    if(etapeMaxBresenham == 1) return;
 
     switch(ID){
         case 0: addPixel(listX, listY, princValue, otherValue); break;
@@ -221,9 +234,39 @@ void MainWindow::on_spinBox_4_valueChanged(const QString &arg1)
 void MainWindow::on_pushButton_clicked()
 {
     drawLineOnPlot(x1, y1, x2, y2);
+    resetBresenham();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    drawLineOnPlot(x1, y1, x2, y2);
+    resetBresenham();
+    etapeMaxBresenham = INT_MAX;
     drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
+    etapeMaxBresenham = etape;
+}
+
+void MainWindow::on_EtapePrec_clicked()
+{
+    drawLineOnPlot(x1, y1, x2, y2);
+
+    if(etapeMaxBresenham <=1)
+        return;
+    else{
+        etapeMaxBresenham--;
+        drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
+    }
+}
+
+void MainWindow::on_EtapeSuiv_clicked()
+{
+    drawLineOnPlot(x1, y1, x2, y2);
+
+    etapeMaxBresenham++;
+    drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
+}
+
+void MainWindow::on_supprBresenham_clicked()
+{
+    resetBresenham();
 }
