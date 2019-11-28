@@ -28,13 +28,22 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         qcustomplot.cpp \
+    glarea.cpp \
+    gl_repere.cpp
 
 HEADERS += \
         mainwindow.h \
         qcustomplot.h \
+    glarea.h \
+    gl_repere.h \
+    myglobject.h
 
 FORMS += \
         mainwindow.ui
+
+RESOURCES += \
+        baseVBO.qrc
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
