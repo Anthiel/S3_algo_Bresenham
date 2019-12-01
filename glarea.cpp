@@ -69,12 +69,10 @@ void GLArea::initializeGL()
 
 void GLArea::makeGLObjects()
 {
-    QVector<GLfloat> vertData;
+    repereX->createGlObject(vertData);
+    repereY->createGlObject(vertData);
+    repereZ->createGlObject(vertData);
 
-    repereX.createGlObject(vertData);
-
-    gl_repere repereY(2, {0.0, 0.0, 0.0}, 3, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0});
-    repereY.createGlObject(vertData);
 
     m_vbo.create();
     m_vbo.bind();
@@ -124,8 +122,10 @@ void GLArea::paintGL()
     m_program->enableAttributeArray("posAttr");
     m_program->enableAttributeArray("colAttr");
 
-    repereX.display();
-    glDrawArrays(GL_LINE_STRIP, 2, 2);
+    repereX->display(vertData);
+    repereY->display(vertData);
+    repereZ->display(vertData);
+
 
 
     m_program->disableAttributeArray("posAttr");

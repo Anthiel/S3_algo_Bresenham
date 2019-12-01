@@ -17,7 +17,14 @@ class GLArea : public QOpenGLWidget,
 
 public:
     explicit GLArea(QWidget *parent = 0);
-    ~GLArea();
+    ~GLArea() override;
+
+    gl_repere *repereX = new gl_repere(2, {0.0, 0.0, 0.0}, 3, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0});
+    gl_repere *repereY = new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0});
+    gl_repere *repereZ = new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0});
+
+
+
 
 public slots:
     void setRadius(double radius);
@@ -47,15 +54,13 @@ private:
     double m_anim = 0;
     double m_radius = 0.5;
     double m_ratio = 1;
+    QVector<GLfloat> vertData;
 
     QOpenGLShaderProgram *m_program;
 
     void makeGLObjects();
     void tearGLObjects();
     QOpenGLBuffer m_vbo;
-
-    gl_repere repereX(2,{0.0, 0.0, 0.0}, 3, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0});
-
 };
 
 #endif // GLAREA_H

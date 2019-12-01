@@ -10,7 +10,10 @@
 
 
 class myGlObject{
+public:
+    //virtual ~myGlObject() = 0;
     virtual void display(QVector<GLfloat> &vertData) = 0;
+
 };
 
 

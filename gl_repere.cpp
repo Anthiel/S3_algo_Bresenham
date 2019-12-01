@@ -10,7 +10,7 @@ gl_repere::gl_repere(int nbPoint, QVector3D pos, double l, QVector3D ax, QVector
 }
 
 void gl_repere::initVertDataInfo(QVector<GLfloat> &vertData){
-    dataBegin = vertData.size();
+    dataBegin = vertData.size()/6;
     dataEnd = dataBegin+nbPointControl;
     isItInit = true;
 }
@@ -57,7 +57,7 @@ void gl_repere::display(QVector<GLfloat> &vertData){
         std::cout << "erreur : display gl_repere : vertdataInfo non init" << std::endl;
         return;
     }
-
+    std::cout << "databegin : " << dataBegin << " nb point : "<< nbPointControl << std::endl;
     glDrawArrays(GL_LINE_STRIP, dataBegin, nbPointControl);
 }
 
