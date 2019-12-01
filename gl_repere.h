@@ -14,6 +14,8 @@ class gl_repere : public myGlObject
 public:
     gl_repere(int nbPoint, QVector3D pos, double h, QVector3D ax, QVector3D color);
     void initVertDataInfo(QVector<GLfloat> &vertData);
+    void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
+                                QVector3D coord, QVector3D couleur);
     void createGlObject(QVector<GLfloat> &vertData);
     void display(QVector<GLfloat> &vertData) override;
     double effect(int coordID, int currentCoord);

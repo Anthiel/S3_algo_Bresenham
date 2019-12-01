@@ -15,69 +15,49 @@ void gl_repere::initVertDataInfo(QVector<GLfloat> &vertData){
     isItInit = true;
 }
 
+void gl_repere::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
+                            QVector3D coord, QVector3D couleur){
+
+    for(int i = 0; i < 3 ; i++)
+        vertices.push_back(coord[i]);
+    for(int i = 0; i < 3 ; i++)
+        colors.push_back(couleur[i]);
+}
+
 void gl_repere::createGlObject(QVector<GLfloat> &vertData){
 
     initVertDataInfo(vertData);
 
-    divisionAxe = 11;
+    divisionAxe = 21;
     double hauteurAxePerpendiculaire = 0.05;
 
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> colors;
 
     //axe principal
-    vertices.push_back(posInit[0]);
-    vertices.push_back(posInit[1]);
-    vertices.push_back(posInit[2]);
-
-    colors.push_back(colr[0]);
-    colors.push_back(colr[1]);
-    colors.push_back(colr[2]);
+    createPoint(vertices, colors, posInit, colr);
 
     for(double i = 1.0; i < nbPointControl; i++){
 
-        vertices.push_back(posInit[0]+ ((longueur/i)*axe[0]));
-        vertices.push_back(posInit[1]+ ((longueur/i)*axe[1]));
-        vertices.push_back(posInit[2]+ ((longueur/i)*axe[2]));
-
-        colors.push_back(colr[0]);
-        colors.push_back(colr[1]);
-        colors.push_back(colr[2]);
+        QVector3D coord(posInit[0]+ ((longueur/i)*axe[0]),
+                        posInit[1]+ ((longueur/i)*axe[1]),
+                        posInit[2]+ ((longueur/i)*axe[2]));
+        createPoint(vertices, colors, coord, colr);
     }
 
     //axes perpendiculaires à l'axe principal
 
-    vertices.push_back(posInit[0]);
-    vertices.push_back(posInit[1] + hauteurAxePerpendiculaire);
-    vertices.push_back(posInit[2]);
+    for(double i = 0.0; i <= divisionAxe - 1; i++){
 
-    colors.push_back(colr[0]);
-    colors.push_back(colr[1]);
-    colors.push_back(colr[2]);
+        QVector3D coord(posInit[0]+ ((longueur*(i/(divisionAxe-1)))*axe[0] + hauteurAxePerpendiculaire*axe[1]),
+                        posInit[1]+ ((longueur*(i/(divisionAxe-1)))*axe[1] + hauteurAxePerpendiculaire*(axe[0]+axe[2])),
+                        posInit[2]+ ((longueur*(i/(divisionAxe-1)))*axe[2]));
+        createPoint(vertices, colors, coord, colr);
 
-    vertices.push_back(posInit[0]);
-    vertices.push_back(posInit[1] - hauteurAxePerpendiculaire);
-    vertices.push_back(posInit[2]);
-
-    colors.push_back(colr[0]);
-    colors.push_back(colr[1]);
-    colors.push_back(colr[2]);
-    for(double i = 1.0; i <= divisionAxe - 1; i++){
-        vertices.push_back(posInit[0]+ ((longueur*(i/(divisionAxe-1)))*axe[0]) + hauteurAxePerpendiculaire*axe[1]);
-        vertices.push_back(posInit[1]+ ((longueur*(i/(divisionAxe-1)))*axe[1]) + hauteurAxePerpendiculaire*(axe[0]+axe[2]));
-        vertices.push_back(posInit[2]+ ((longueur*(i/(divisionAxe-1)))*axe[2]));
-
-        colors.push_back(colr[0]);
-        colors.push_back(colr[1]);
-        colors.push_back(colr[2]);
-
-        vertices.push_back(posInit[0]+ ((longueur*(i/(divisionAxe-1)))*axe[0]) - hauteurAxePerpendiculaire*axe[1]);
-        vertices.push_back(posInit[1]+ ((longueur*(i/(divisionAxe-1)))*axe[1]) - hauteurAxePerpendiculaire*(axe[0]+axe[2]));
-        vertices.push_back(posInit[2]+ ((longueur*(i/(divisionAxe-1)))*axe[2]));
-
-        colors.push_back(colr[0]);
-        colors.push_back(colr[1]);
-        colors.push_back(colr[2]);
+        coord = QVector3D(posInit[0]+ ((longueur*(i/(divisionAxe-1)))*axe[0] - hauteurAxePerpendiculaire*axe[1]),
+                          posInit[1]+ ((longueur*(i/(divisionAxe-1)))*axe[1] - hauteurAxePerpendiculaire*(axe[0]+axe[2])),
+                          posInit[2]+ ((longueur*(i/(divisionAxe-1)))*axe[2]));
+        createPoint(vertices, colors, coord, colr);
     }
 
 
