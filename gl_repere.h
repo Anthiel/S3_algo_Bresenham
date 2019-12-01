@@ -29,6 +29,8 @@ public:
     QVector3D colr {1.0, 1.0, 1.0};
     double longueur = 0.0;
 
+    int divisionAxe = 11;
+
 
 };
 
