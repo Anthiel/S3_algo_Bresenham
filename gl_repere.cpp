@@ -80,14 +80,11 @@ void gl_repere::display(QVector<GLfloat> &vertData){
 
     int debut = dataBegin;
 
-    std::cout << "\n\n autre objet \n debut : " << debut << std::endl;
-
     glDrawArrays(GL_LINE_STRIP, debut, nbPointControl);
 
     debut += nbPointControl;
 
     for(int i = 0; i < divisionAxe; i++){
-        std::cout << "debut : " << debut << std::endl;
         glDrawArrays(GL_LINE_STRIP, debut, 2);
         debut += 2;
     }

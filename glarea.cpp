@@ -69,10 +69,13 @@ void GLArea::initializeGL()
 
 void GLArea::makeGLObjects()
 {
-    //les objets
+    //les objets - Reperes
     MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}));
     MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}));
     MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}));
+
+    //les objets - Reperes
+    MyObjects.push_back(new gl_point({1.0, 0.0, 0.0}, {1.0, 1.0, 0.0}, 0.02));
 
     //création des objets GL
     for(int i = 0; i < MyObjects.size(); i++)
@@ -116,6 +119,8 @@ void GLArea::paintGL()
 
     // Rotation de la scène pour l'animation
     matrix.rotate(m_angle, 0, 1, 0);
+    matrix.rotate(m_angle, 1, 0, 0);
+
 
     m_program->setUniformValue("matrix", matrix);
 

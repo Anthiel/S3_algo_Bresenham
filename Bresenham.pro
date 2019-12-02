@@ -29,14 +29,18 @@ SOURCES += \
         mainwindow.cpp \
         qcustomplot.cpp \
     glarea.cpp \
-    gl_repere.cpp
+    gl_repere.cpp \
+    gl_point.cpp \
+    gl_segment.cpp
 
 HEADERS += \
         mainwindow.h \
         qcustomplot.h \
     glarea.h \
     gl_repere.h \
-    myglobject.h
+    myglobject.h \
+    gl_point.h \
+    gl_segment.h
 
 FORMS += \
         mainwindow.ui

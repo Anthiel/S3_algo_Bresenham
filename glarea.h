@@ -9,6 +9,8 @@
 #include <QOpenGLShaderProgram>
 
 #include "gl_repere.h"
+#include "gl_point.h"
+
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions
