@@ -18,12 +18,14 @@ public:
                                 QVector3D coord, QVector3D couleur) override;
     void createGlObject(QVector<GLfloat> &vertData) override;
     void display(QVector<GLfloat> &vertData) override;
-    double effect(QVector3D currentCoord);
+    double effect(QVector<GLfloat> &vertData, QVector3D currentCoord) override;
 
 
     bool isItInit = false;
     int dataBegin = 0;
+    int vertDataBegin = 0;
     int dataEnd = 0;
+    int nbPointStructure = 3; //pour un triangle : 3 points necessaires
 
     int nbPointControl = 8; // 8 points dans un cube
     int division = 12; // 12 triangles dans un cube

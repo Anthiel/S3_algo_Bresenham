@@ -17,6 +17,8 @@ public:
     virtual void initVertDataInfo(QVector<GLfloat> &vertData) = 0;
     virtual void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                                 QVector3D coord, QVector3D couleur) = 0;
+    virtual double effect(QVector<GLfloat> &vertData, QVector3D currentCoord) = 0;
+
 
 };
 

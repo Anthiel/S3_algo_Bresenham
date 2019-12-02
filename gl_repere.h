@@ -18,12 +18,13 @@ public:
                                 QVector3D coord, QVector3D couleur) override;
     void createGlObject(QVector<GLfloat> &vertData) override;
     void display(QVector<GLfloat> &vertData) override;
-    double effect(int coordID, int currentCoord);
+    double effect(QVector<GLfloat> &vertData, QVector3D currentCoord) override;
 
 
     bool isItInit = false;
     int dataBegin = 0;
     int dataEnd = 0;
+    int nbPointStructure = 2; //pour une ligne : 2 points necessaires
 
     int nbPointControl = 0;
     QVector3D posInit {0.0, 0.0, 0.0};

@@ -9,6 +9,7 @@ gl_point::gl_point(QVector3D pos, QVector3D color, double h)
 
 void gl_point::initVertDataInfo(QVector<GLfloat> &vertData){
     dataBegin = vertData.size()/6;
+    vertDataBegin = vertData.size();
     dataEnd = dataBegin+nbPointControl;
     isItInit = true;
 }
@@ -24,7 +25,8 @@ void gl_point::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> 
 
 void gl_point::createGlObject(QVector<GLfloat> &vertData){
 
-    initVertDataInfo(vertData);
+    if(!isItInit)
+        initVertDataInfo(vertData);
 
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> colors;
@@ -119,7 +121,7 @@ void gl_point::createGlObject(QVector<GLfloat> &vertData){
     coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
     createPoint(vertices, colors, coord, colr);
 
-    for (int i = 0; i < 3*division; ++i) {
+    for (int i = 0; i < nbPointStructure*division; ++i) {
         // coordonnées sommets
         for (int j = 0; j < 3; j++)
             vertData.append(vertices[i*3+j]);
@@ -139,12 +141,24 @@ void gl_point::display(QVector<GLfloat> &vertData){
     int debut = dataBegin;
 
     for(int i = 0; i < division; i++){
-        glDrawArrays(GL_TRIANGLES, debut, 3);
+        glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
         debut += 3;
     }
 }
 
-double gl_point::effect(QVector3D currentCoord){
+double gl_point::effect(QVector<GLfloat> &vertData, QVector3D currentCoord){
+    std::cout << "valeur de posinit : " << posInit[0] << " " << posInit[1] << " " << posInit[2] << std::endl;
 
+    posInit = currentCoord;
+    QVector<GLfloat> newposition;
+    createGlObject(newposition);
+
+    std::cout << "valeur de posinit : " << posInit[0] << " " << posInit[1] << " " << posInit[2] << std::endl;
+    int j = 0;
+    for(int i = vertDataBegin; i< vertDataBegin + division*nbPointStructure*2; i+=nbPointStructure*2){
+        vertData[i] = newposition[j];
+        j++;
+    }
+    this->display(vertData);
     return 1;
 }

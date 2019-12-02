@@ -90,7 +90,6 @@ void gl_repere::display(QVector<GLfloat> &vertData){
     }
 }
 
-double gl_repere::effect(int coordID, int currentCoord){
-
+double gl_repere::effect(QVector<GLfloat> &vertData, QVector3D currentCoord){
     return 1;
 }

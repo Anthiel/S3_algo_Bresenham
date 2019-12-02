@@ -67,8 +67,14 @@ void GLArea::initializeGL()
 }
 
 void GLArea::setPoint(int x1, int y1, int x2, int y2){
-    pointA = QVector3D(x1, y1, 0);
-    pointB = QVector3D(x2, y2, 0);
+    pointA = QVector3D(x1/10.0, y1/10.0, 0);
+    pointB = QVector3D(x2/10.0, y2/10.0, 0);
+    MyObjects[3]->effect(vertData, pointA);
+    MyObjects[4]->effect(vertData, pointB);
+    m_vbo.bind();
+    m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
+    update();
+
 }
 
 

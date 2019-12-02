@@ -60,7 +60,6 @@ void gl_segment::display(QVector<GLfloat> &vertData){
     }
 }
 
-double gl_segment::effect(int coordID, int currentCoord){
-
-    return 1;
+double gl_segment::effect(QVector<GLfloat> &vertData, QVector3D currentCoord){
+    return 1.0;
 }
