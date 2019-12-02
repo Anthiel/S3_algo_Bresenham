@@ -69,10 +69,14 @@ void GLArea::initializeGL()
 
 void GLArea::makeGLObjects()
 {
-    repereX->createGlObject(vertData);
-    repereY->createGlObject(vertData);
-    repereZ->createGlObject(vertData);
+    //les objets
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}));
 
+    //création des objets GL
+    for(int i = 0; i < MyObjects.size(); i++)
+        MyObjects.at(i)->createGlObject(vertData);
 
     m_vbo.create();
     m_vbo.bind();
@@ -122,10 +126,9 @@ void GLArea::paintGL()
     m_program->enableAttributeArray("posAttr");
     m_program->enableAttributeArray("colAttr");
 
-    repereX->display(vertData);
-    repereY->display(vertData);
-    repereZ->display(vertData);
-
+    //méthode d'affichage (ligne, triangle etc)
+    for(int i = 0; i < MyObjects.size(); i++)
+        MyObjects.at(i)->display(vertData);
 
 
     m_program->disableAttributeArray("posAttr");

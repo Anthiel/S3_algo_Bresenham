@@ -19,11 +19,7 @@ public:
     explicit GLArea(QWidget *parent = 0);
     ~GLArea() override;
 
-    gl_repere *repereX = new gl_repere(2, {0.0, 0.0, 0.0}, 3, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0});
-    gl_repere *repereY = new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0});
-    gl_repere *repereZ = new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0});
-
-
+    std::vector <myGlObject*> MyObjects;
 
 
 public slots:
