@@ -10,7 +10,7 @@
 
 #include "gl_repere.h"
 #include "gl_point.h"
-
+#include "gl_segment.h"
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions
@@ -20,6 +20,7 @@ class GLArea : public QOpenGLWidget,
 public:
     explicit GLArea(QWidget *parent = 0);
     ~GLArea() override;
+    void setPoint(int x1, int y1, int x2, int y2);
 
     std::vector <myGlObject*> MyObjects;
 
@@ -59,6 +60,9 @@ private:
     void makeGLObjects();
     void tearGLObjects();
     QOpenGLBuffer m_vbo;
+
+    QVector3D pointA;
+    QVector3D pointB;
 };
 
 #endif // GLAREA_H

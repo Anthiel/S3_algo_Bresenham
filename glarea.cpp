@@ -66,16 +66,25 @@ void GLArea::initializeGL()
     //m_matrixUniform = m_program->uniformLocation("matrix");
 }
 
+void GLArea::setPoint(int x1, int y1, int x2, int y2){
+    pointA = QVector3D(x1, y1, 0);
+    pointB = QVector3D(x2, y2, 0);
+}
+
 
 void GLArea::makeGLObjects()
 {
     //les objets - Reperes
-    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}));
-    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}));
-    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 3, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}));
 
-    //les objets - Reperes
-    MyObjects.push_back(new gl_point({1.0, 0.0, 0.0}, {1.0, 1.0, 0.0}, 0.02));
+    //les objets - Point segment
+    MyObjects.push_back(new gl_point({0.1, 0.0, 0.0}, {1.0, 1.0, 0.0}, 0.01));
+    MyObjects.push_back(new gl_point({0.0, 0.2, 0.2}, {1.0, 1.0, 0.0}, 0.01));
+
+    //les objets - segment
+    MyObjects.push_back(new gl_segment({0.1, 0.0, 0.0},{0.0, 0.2, 0.2}, {1.0, 1.0, 0.0}));
 
     //création des objets GL
     for(int i = 0; i < MyObjects.size(); i++)

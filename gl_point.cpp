@@ -132,7 +132,7 @@ void gl_point::createGlObject(QVector<GLfloat> &vertData){
 void gl_point::display(QVector<GLfloat> &vertData){
 
     if(!isItInit){
-        std::cout << "erreur : display gl_repere : vertdataInfo non init" << std::endl;
+        std::cout << "erreur : display gl_point : vertdataInfo non init" << std::endl;
         return;
     }
 
@@ -144,7 +144,7 @@ void gl_point::display(QVector<GLfloat> &vertData){
     }
 }
 
-double gl_point::effect(int coordID, int currentCoord){
+double gl_point::effect(QVector3D currentCoord){
 
     return 1;
 }

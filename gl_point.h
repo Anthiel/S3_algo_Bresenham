@@ -18,7 +18,7 @@ public:
                                 QVector3D coord, QVector3D couleur) override;
     void createGlObject(QVector<GLfloat> &vertData) override;
     void display(QVector<GLfloat> &vertData) override;
-    double effect(int coordID, int currentCoord);
+    double effect(QVector3D currentCoord);
 
 
     bool isItInit = false;

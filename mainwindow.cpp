@@ -214,21 +214,25 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
 void MainWindow::on_spinBox_valueChanged(const QString &arg1)
 {
     x1 = arg1.toInt();
+    ui->openGLWidget->setPoint(x1,y1, x2,y2);
 }
 
 void MainWindow::on_spinBox_2_valueChanged(const QString &arg1)
 {
     y1 = arg1.toInt();
+    ui->openGLWidget->setPoint(x1,y1, x2,y2);
 }
 
 void MainWindow::on_spinBox_3_valueChanged(const QString &arg1)
 {
     x2 = arg1.toInt();
+    ui->openGLWidget->setPoint(x1,y1, x2,y2);
 }
 
 void MainWindow::on_spinBox_4_valueChanged(const QString &arg1)
 {
     y2 = arg1.toInt();
+    ui->openGLWidget->setPoint(x1,y1, x2,y2);
 }
 
 void MainWindow::on_pushButton_clicked()

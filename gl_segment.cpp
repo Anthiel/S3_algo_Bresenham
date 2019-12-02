@@ -3,8 +3,8 @@
 gl_segment::gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color)
 {
     posInit = pos;
+    posNext = posSuiv;
     colr = color;
-    hauteur = h;
 }
 
 void gl_segment::initVertDataInfo(QVector<GLfloat> &vertData){
@@ -29,97 +29,13 @@ void gl_segment::createGlObject(QVector<GLfloat> &vertData){
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> colors;
 
-    //face du bas
-    QVector3D coord(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
+    QVector3D coord(posInit[0], posInit[1], posInit[2]);
     createPoint(vertices, colors, coord, colr);
 
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
+    coord = QVector3D(posNext[0], posNext[1], posNext[2]);
     createPoint(vertices, colors, coord, colr);
 
-    //face du haut
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    //face du gauche
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    //face du droite
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    //face du devant
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] + hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    //face du derriere
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] + hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] + hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-    coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
-    createPoint(vertices, colors, coord, colr);
-
-    for (int i = 0; i < 3*division; ++i) {
+    for (int i = 0; i < nbPointStructure*division; ++i) {
         // coordonnées sommets
         for (int j = 0; j < 3; j++)
             vertData.append(vertices[i*3+j]);
@@ -132,15 +48,15 @@ void gl_segment::createGlObject(QVector<GLfloat> &vertData){
 void gl_segment::display(QVector<GLfloat> &vertData){
 
     if(!isItInit){
-        std::cout << "erreur : display gl_repere : vertdataInfo non init" << std::endl;
+        std::cout << "erreur : display gl_segment : vertdataInfo non init" << std::endl;
         return;
     }
 
     int debut = dataBegin;
 
     for(int i = 0; i < division; i++){
-        glDrawArrays(GL_TRIANGLES, debut, 3);
-        debut += 3;
+        glDrawArrays(GL_LINES, debut, nbPointStructure);
+        debut += nbPointStructure;
     }
 }
 
