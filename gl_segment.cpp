@@ -7,12 +7,6 @@ gl_segment::gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color)
     colr = color;
 }
 
-void gl_segment::initVertDataInfo(QVector<GLfloat> &vertData){
-    dataBegin = vertData.size()/6;
-    dataEnd = dataBegin+nbPointControl;
-    isItInit = true;
-}
-
 void gl_segment::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                             QVector3D coord, QVector3D couleur){
 
@@ -22,9 +16,7 @@ void gl_segment::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat
         colors.push_back(couleur[i]);
 }
 
-void gl_segment::createGlObject(QVector<GLfloat> &vertData){
-
-    initVertDataInfo(vertData);
+void gl_segment::createGlObject(){
 
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> colors;
@@ -43,16 +35,27 @@ void gl_segment::createGlObject(QVector<GLfloat> &vertData){
         for (int j = 0; j < 3; j++)
             vertData.append(colors[i*3+j]);
     }
+
+    m_vbo.create();
+    m_vbo.bind();
+    m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
 }
 
-void gl_segment::display(QVector<GLfloat> &vertData){
+/*
+void gl_segment::display(){
 
-    if(!isItInit){
-        std::cout << "erreur : display gl_segment : vertdataInfo non init" << std::endl;
-        return;
-    }
+    std::cout << "size vertdata : " << vertData.size() << " size max : " << division*nbPointStructure << std::endl;
 
-    int debut = dataBegin;
+    for(int debut = 0; debut < division*nbPointStructure; debut+=nbPointStructure)
+        glDrawArrays(GL_LINES, debut, nbPointStructure);
+}
+*/
+
+void gl_segment::display(){
+
+    m_vbo.bind();
+
+    int debut = 0;
 
     for(int i = 0; i < division; i++){
         glDrawArrays(GL_LINES, debut, nbPointStructure);
@@ -60,6 +63,7 @@ void gl_segment::display(QVector<GLfloat> &vertData){
     }
 }
 
-double gl_segment::effect(QVector<GLfloat> &vertData, QVector3D currentCoord){
-    return 1.0;
+void gl_segment::tearGLObjects()
+{
+    m_vbo.destroy();
 }

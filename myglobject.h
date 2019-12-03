@@ -11,14 +11,16 @@
 
 class myGlObject{
 public:
-    //virtual ~myGlObject() = 0;
-    virtual void display(QVector<GLfloat> &vertData) = 0;
-    virtual void createGlObject(QVector<GLfloat> &vertData) = 0;
-    virtual void initVertDataInfo(QVector<GLfloat> &vertData) = 0;
+    virtual void display() = 0;
+    virtual void createGlObject() = 0;
     virtual void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                                 QVector3D coord, QVector3D couleur) = 0;
-    virtual double effect(QVector<GLfloat> &vertData, QVector3D currentCoord) = 0;
+    virtual void tearGLObjects() = 0;
 
+
+protected:
+    QOpenGLBuffer m_vbo;
+    QVector<GLfloat> vertData;
 
 };
 

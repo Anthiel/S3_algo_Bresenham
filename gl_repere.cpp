@@ -9,12 +9,6 @@ gl_repere::gl_repere(int nbPoint, QVector3D pos, double l, QVector3D ax, QVector
     colr = color;
 }
 
-void gl_repere::initVertDataInfo(QVector<GLfloat> &vertData){
-    dataBegin = vertData.size()/6;
-    dataEnd = dataBegin+nbPointControl;
-    isItInit = true;
-}
-
 void gl_repere::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                             QVector3D coord, QVector3D couleur){
 
@@ -24,9 +18,7 @@ void gl_repere::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat>
         colors.push_back(couleur[i]);
 }
 
-void gl_repere::createGlObject(QVector<GLfloat> &vertData){
-
-    initVertDataInfo(vertData);
+void gl_repere::createGlObject(){
 
     divisionAxe = 21;
     double hauteurAxePerpendiculaire = 0.05;
@@ -69,16 +61,27 @@ void gl_repere::createGlObject(QVector<GLfloat> &vertData){
         for (int j = 0; j < 3; j++)
             vertData.append(colors[i*3+j]);
     }
+
+    m_vbo.create();
+    m_vbo.bind();
+    m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
+
 }
+/*
+void gl_repere::display(){
 
-void gl_repere::display(QVector<GLfloat> &vertData){
 
-    if(!isItInit){
-        std::cout << "erreur : display gl_repere : vertdataInfo non init" << std::endl;
-        return;
-    }
+    for(int debut = 0; debut < divisionAxe*nbPointStructure; debut+=nbPointStructure)
+        glDrawArrays(GL_LINE_STRIP, debut, nbPointStructure);
 
-    int debut = dataBegin;
+}
+*/
+
+void gl_repere::display(){
+
+    m_vbo.bind();
+
+    int debut = 0;
 
     glDrawArrays(GL_LINE_STRIP, debut, nbPointControl);
 
@@ -90,6 +93,7 @@ void gl_repere::display(QVector<GLfloat> &vertData){
     }
 }
 
-double gl_repere::effect(QVector<GLfloat> &vertData, QVector3D currentCoord){
-    return 1;
+void gl_repere::tearGLObjects()
+{
+    m_vbo.destroy();
 }

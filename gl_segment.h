@@ -13,17 +13,15 @@ class gl_segment : public myGlObject
 {
 public:
     gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color);
-    void initVertDataInfo(QVector<GLfloat> &vertData) override;
     void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                                 QVector3D coord, QVector3D couleur) override;
-    void createGlObject(QVector<GLfloat> &vertData) override;
-    void display(QVector<GLfloat> &vertData) override;
-    double effect(QVector<GLfloat> &vertData, QVector3D currentCoord) override;
+    void createGlObject() override;
+    void display() override;
+    void tearGLObjects() override;
 
 
-    bool isItInit = false;
-    int dataBegin = 0;
-    int dataEnd = 0;
+    QOpenGLBuffer m_vbo;
+    QVector<GLfloat> vertData;
 
     int nbPointControl = 2; // 8 points dans un cube
     int division = 1; // 12 triangles dans un cube

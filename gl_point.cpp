@@ -7,12 +7,6 @@ gl_point::gl_point(QVector3D pos, QVector3D color, double h)
     hauteur = h;
 }
 
-void gl_point::initVertDataInfo(QVector<GLfloat> &vertData){
-    dataBegin = vertData.size()/6;
-    vertDataBegin = vertData.size();
-    dataEnd = dataBegin+nbPointControl;
-    isItInit = true;
-}
 
 void gl_point::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                             QVector3D coord, QVector3D couleur){
@@ -23,10 +17,7 @@ void gl_point::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> 
         colors.push_back(couleur[i]);
 }
 
-void gl_point::createGlObject(QVector<GLfloat> &vertData){
-
-    if(!isItInit)
-        initVertDataInfo(vertData);
+void gl_point::createGlObject(){
 
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> colors;
@@ -129,36 +120,32 @@ void gl_point::createGlObject(QVector<GLfloat> &vertData){
         for (int j = 0; j < 3; j++)
             vertData.append(colors[i*3+j]);
     }
+    m_vbo.create();
+    m_vbo.bind();
+    m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
+
 }
+/*
+void gl_point::display(){
+    for(int debut = 0; debut < division*nbPointStructure; debut+=nbPointStructure)
+        glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
+}
+*/
+void gl_point::display(){
 
-void gl_point::display(QVector<GLfloat> &vertData){
+    m_vbo.bind();
 
-    if(!isItInit){
-        std::cout << "erreur : display gl_point : vertdataInfo non init" << std::endl;
-        return;
-    }
-
-    int debut = dataBegin;
+    int debut = 0;
 
     for(int i = 0; i < division; i++){
         glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
         debut += 3;
     }
+    m_vbo.release();
 }
 
-double gl_point::effect(QVector<GLfloat> &vertData, QVector3D currentCoord){
-    std::cout << "valeur de posinit : " << posInit[0] << " " << posInit[1] << " " << posInit[2] << std::endl;
 
-    posInit = currentCoord;
-    QVector<GLfloat> newposition;
-    createGlObject(newposition);
-
-    std::cout << "valeur de posinit : " << posInit[0] << " " << posInit[1] << " " << posInit[2] << std::endl;
-    int j = 0;
-    for(int i = vertDataBegin; i< vertDataBegin + division*nbPointStructure*2; i+=nbPointStructure*2){
-        vertData[i] = newposition[j];
-        j++;
-    }
-    this->display(vertData);
-    return 1;
+void gl_point::tearGLObjects()
+{
+    m_vbo.destroy();
 }

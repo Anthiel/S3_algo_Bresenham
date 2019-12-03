@@ -59,7 +59,6 @@ private:
 
     void makeGLObjects();
     void tearGLObjects();
-    QOpenGLBuffer m_vbo;
 
     QVector3D pointA;
     QVector3D pointB;

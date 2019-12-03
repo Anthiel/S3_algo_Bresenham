@@ -69,12 +69,7 @@ void GLArea::initializeGL()
 void GLArea::setPoint(int x1, int y1, int x2, int y2){
     pointA = QVector3D(x1/10.0, y1/10.0, 0);
     pointB = QVector3D(x2/10.0, y2/10.0, 0);
-    MyObjects[3]->effect(vertData, pointA);
-    MyObjects[4]->effect(vertData, pointB);
-    m_vbo.bind();
-    m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
     update();
-
 }
 
 
@@ -94,17 +89,14 @@ void GLArea::makeGLObjects()
 
     //création des objets GL
     for(int i = 0; i < MyObjects.size(); i++)
-        MyObjects.at(i)->createGlObject(vertData);
-
-    m_vbo.create();
-    m_vbo.bind();
-    m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
+        MyObjects.at(i)->createGlObject();
 }
 
 
 void GLArea::tearGLObjects()
 {
-    m_vbo.destroy();
+    for(auto object : MyObjects)
+        object->tearGLObjects();
 }
 
 
@@ -124,6 +116,7 @@ void GLArea::paintGL()
     qDebug() << __FUNCTION__ ;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
     m_program->bind(); // active le shader program
 
@@ -148,7 +141,7 @@ void GLArea::paintGL()
 
     //méthode d'affichage (ligne, triangle etc)
     for(int i = 0; i < MyObjects.size(); i++)
-        MyObjects.at(i)->display(vertData);
+        MyObjects.at(i)->display();
 
 
     m_program->disableAttributeArray("posAttr");
