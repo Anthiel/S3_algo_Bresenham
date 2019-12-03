@@ -131,9 +131,15 @@ void gl_point::display(){
         glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
 }
 */
-void gl_point::display(){
+void gl_point::display(QOpenGLShaderProgram &m_program){
 
     m_vbo.bind();
+    m_program.setAttributeBuffer("posAttr",
+        GL_FLOAT, 0, 3, 6 * sizeof(GLfloat));
+    m_program.setAttributeBuffer("colAttr",
+        GL_FLOAT, 3 * sizeof(GLfloat), 3, 6 * sizeof(GLfloat));
+    m_program.enableAttributeArray("posAttr");
+    m_program.enableAttributeArray("colAttr");
 
     int debut = 0;
 
@@ -141,6 +147,8 @@ void gl_point::display(){
         glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
         debut += 3;
     }
+    m_program.disableAttributeArray("posAttr");
+    m_program.disableAttributeArray("colAttr");
     m_vbo.release();
 }
 

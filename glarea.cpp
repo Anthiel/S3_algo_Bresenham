@@ -132,20 +132,9 @@ void GLArea::paintGL()
 
     m_program->setUniformValue("matrix", matrix);
 
-    m_program->setAttributeBuffer("posAttr",
-        GL_FLOAT, 0, 3, 6 * sizeof(GLfloat));
-    m_program->setAttributeBuffer("colAttr",
-        GL_FLOAT, 3 * sizeof(GLfloat), 3, 6 * sizeof(GLfloat));
-    m_program->enableAttributeArray("posAttr");
-    m_program->enableAttributeArray("colAttr");
-
     //méthode d'affichage (ligne, triangle etc)
     for(int i = 0; i < MyObjects.size(); i++)
-        MyObjects.at(i)->display();
-
-
-    m_program->disableAttributeArray("posAttr");
-    m_program->disableAttributeArray("colAttr");
+        MyObjects.at(i)->display(*m_program);
 
     m_program->release();
 }

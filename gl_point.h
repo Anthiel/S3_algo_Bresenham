@@ -16,7 +16,7 @@ public:
     void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                                 QVector3D coord, QVector3D couleur) override;
     void createGlObject() override;
-    void display() override;
+    void display(QOpenGLShaderProgram &m_program) override;
     void tearGLObjects() override;
 
 

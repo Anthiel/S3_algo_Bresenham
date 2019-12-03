@@ -11,7 +11,7 @@
 
 class myGlObject{
 public:
-    virtual void display() = 0;
+    virtual void display(QOpenGLShaderProgram &m_program) = 0;
     virtual void createGlObject() = 0;
     virtual void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                                 QVector3D coord, QVector3D couleur) = 0;

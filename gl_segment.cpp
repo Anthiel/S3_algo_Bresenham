@@ -51,9 +51,15 @@ void gl_segment::display(){
 }
 */
 
-void gl_segment::display(){
+void gl_segment::display(QOpenGLShaderProgram &m_program){
 
     m_vbo.bind();
+    m_program.setAttributeBuffer("posAttr",
+        GL_FLOAT, 0, 3, 6 * sizeof(GLfloat));
+    m_program.setAttributeBuffer("colAttr",
+        GL_FLOAT, 3 * sizeof(GLfloat), 3, 6 * sizeof(GLfloat));
+    m_program.enableAttributeArray("posAttr");
+    m_program.enableAttributeArray("colAttr");
 
     int debut = 0;
 
@@ -61,6 +67,9 @@ void gl_segment::display(){
         glDrawArrays(GL_LINES, debut, nbPointStructure);
         debut += nbPointStructure;
     }
+    m_program.disableAttributeArray("posAttr");
+    m_program.disableAttributeArray("colAttr");
+    m_vbo.release();
 }
 
 void gl_segment::tearGLObjects()
