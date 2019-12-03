@@ -1,11 +1,27 @@
 #include "gl_segment.h"
 
-gl_segment::gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color)
+gl_segment::gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color, bool isDisplay)
 {
     posInit = pos;
     posNext = posSuiv;
     colr = color;
 }
+
+void gl_segment::setPositionPoint(QVector3D pos){
+    posInit = pos;
+    createGlObject();
+}
+void gl_segment::setPositionPoint(QVector3D pos, QVector3D posSuiv){
+    posInit = pos;
+    posNext = posSuiv;
+    createGlObject();
+}
+
+void gl_segment::setDisplay(bool mode){
+    displayIt = mode;
+}
+
+/* OPENGL */
 
 void gl_segment::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                             QVector3D coord, QVector3D couleur){
@@ -27,6 +43,7 @@ void gl_segment::createGlObject(){
     coord = QVector3D(posNext[0], posNext[1], posNext[2]);
     createPoint(vertices, colors, coord, colr);
 
+    vertData.clear();
     for (int i = 0; i < nbPointStructure*division; ++i) {
         // coordonnées sommets
         for (int j = 0; j < 3; j++)
@@ -52,8 +69,9 @@ void gl_segment::display(QOpenGLShaderProgram &m_program){
     m_program.enableAttributeArray("posAttr");
     m_program.enableAttributeArray("colAttr");
 
-    for(int debut = 0; debut <= division*nbPointStructure; debut+=nbPointStructure)
-        glDrawArrays(GL_LINES, debut, nbPointStructure);
+    if(displayIt)
+        for(int debut = 0; debut <= division*nbPointStructure; debut+=nbPointStructure)
+            glDrawArrays(GL_LINES, debut, nbPointStructure);
 
     m_program.disableAttributeArray("posAttr");
     m_program.disableAttributeArray("colAttr");

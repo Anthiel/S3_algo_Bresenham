@@ -7,10 +7,14 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
+#include <QDebug>
+#include <QSurfaceFormat>
+#include <QMatrix4x4>
 
 #include "gl_repere.h"
 #include "gl_point.h"
 #include "gl_segment.h"
+#include "gl_bresenham.h"
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions
@@ -20,9 +24,14 @@ class GLArea : public QOpenGLWidget,
 public:
     explicit GLArea(QWidget *parent = 0);
     ~GLArea() override;
-    void setPoint(int x1, int y1, int x2, int y2);
+
+    void setData(QVector<double> listX, QVector<double> listY, int etapeMaxBresenham);
+    void setPoint(int ID, int x, int y);
+    void drawSegment();
+
 
     std::vector <myGlObject*> MyObjects;
+    gl_bresenham myBresenham;
 
 
 public slots:
@@ -60,8 +69,8 @@ private:
     void makeGLObjects();
     void tearGLObjects();
 
-    QVector3D pointA;
-    QVector3D pointB;
+    QVector3D pointA{0.0, 0.0, 0.0};
+    QVector3D pointB{0.0, 0.0, 0.0};
 };
 
 #endif // GLAREA_H

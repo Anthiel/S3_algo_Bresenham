@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::red, 1.5), QBrush(Qt::red), 9));
     ui->plot->graph(1)->setLineStyle(QCPGraph::lsNone);
+
 }
 
 MainWindow::~MainWindow()
@@ -203,7 +204,7 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
     }
 
     ui->plot->graph(1)->setData(listX,listY);
-    ui->plot->replot();
+    ui->openGLWidget->setData(listX, listY, etapeMaxBresenham);
 }
 
 
@@ -214,30 +215,31 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
 void MainWindow::on_spinBox_valueChanged(const QString &arg1)
 {
     x1 = arg1.toInt();
-    ui->openGLWidget->setPoint(x1,y1, x2,y2);
+    ui->openGLWidget->setPoint(0,x1,y1);
 }
 
 void MainWindow::on_spinBox_2_valueChanged(const QString &arg1)
 {
     y1 = arg1.toInt();
-    ui->openGLWidget->setPoint(x1,y1, x2,y2);
+    ui->openGLWidget->setPoint(0,x1,y1);
 }
 
 void MainWindow::on_spinBox_3_valueChanged(const QString &arg1)
 {
     x2 = arg1.toInt();
-    ui->openGLWidget->setPoint(x1,y1, x2,y2);
+    ui->openGLWidget->setPoint(1,x2,y2);
 }
 
 void MainWindow::on_spinBox_4_valueChanged(const QString &arg1)
 {
     y2 = arg1.toInt();
-    ui->openGLWidget->setPoint(x1,y1, x2,y2);
+    ui->openGLWidget->setPoint(1, x2,y2);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     drawLineOnPlot(x1, y1, x2, y2);
+    ui->openGLWidget->drawSegment();
     resetBresenham();
 }
 
@@ -248,6 +250,8 @@ void MainWindow::on_pushButton_2_clicked()
     etapeMaxBresenham = INT_MAX;
     drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
     etapeMaxBresenham = etape;
+    ui->plot->replot();
+    ui->openGLWidget->update();
 }
 
 void MainWindow::on_EtapePrec_clicked()

@@ -35,7 +35,8 @@ SOURCES += \
     glarea.cpp \
     gl_repere.cpp \
     gl_point.cpp \
-    gl_segment.cpp
+    gl_segment.cpp \
+    gl_bresenham.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,7 +45,8 @@ HEADERS += \
     gl_repere.h \
     myglobject.h \
     gl_point.h \
-    gl_segment.h
+    gl_segment.h \
+    gl_bresenham.h
 
 FORMS += \
         mainwindow.ui

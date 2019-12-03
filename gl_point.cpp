@@ -1,12 +1,27 @@
 #include "gl_point.h"
 
-gl_point::gl_point(QVector3D pos, QVector3D color, double h)
+gl_point::gl_point(QVector3D pos, QVector3D color, double h, bool isDisplay)
 {
     posInit = pos;
     colr = color;
     hauteur = h;
+    displayIt = isDisplay;
 }
 
+void gl_point::setPositionPoint(QVector3D pos){
+    posInit = pos;
+    createGlObject();
+}
+void gl_point::setPositionPoint(QVector3D pos, QVector3D posSuiv){
+    posInit = pos;
+    createGlObject();
+}
+
+void gl_point::setDisplay(bool mode){
+    displayIt = mode;
+}
+
+/* OPENGL */
 
 void gl_point::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                             QVector3D coord, QVector3D couleur){
@@ -112,6 +127,7 @@ void gl_point::createGlObject(){
     coord = QVector3D(posInit[0] - hauteur, posInit[1] - hauteur, posInit[2] - hauteur);
     createPoint(vertices, colors, coord, colr);
 
+    vertData.clear();
     for (int i = 0; i < nbPointStructure*division; ++i) {
         // coordonnées sommets
         for (int j = 0; j < 3; j++)
@@ -136,9 +152,9 @@ void gl_point::display(QOpenGLShaderProgram &m_program){
         GL_FLOAT, 3 * sizeof(GLfloat), 3, 6 * sizeof(GLfloat));
     m_program.enableAttributeArray("posAttr");
     m_program.enableAttributeArray("colAttr");
-
-    for(int debut = 0; debut <= division*nbPointStructure; debut+=nbPointStructure)
-        glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
+    if(displayIt)
+        for(int debut = 0; debut <= division*nbPointStructure; debut+=nbPointStructure)
+            glDrawArrays(type, debut, nbPointStructure);
 
     m_program.disableAttributeArray("posAttr");
     m_program.disableAttributeArray("colAttr");

@@ -1,6 +1,6 @@
 #include "gl_repere.h"
 
-gl_repere::gl_repere(int nbPoint, QVector3D pos, double l, QVector3D ax, QVector3D color)
+gl_repere::gl_repere(int nbPoint, QVector3D pos, double l, QVector3D ax, QVector3D color, bool isDisplay)
 {
     nbPointControl = nbPoint;
     posInit = pos-(l/2.0)*ax;
@@ -8,6 +8,20 @@ gl_repere::gl_repere(int nbPoint, QVector3D pos, double l, QVector3D ax, QVector
     axe = ax;
     colr = color;
 }
+
+void gl_repere::setPositionPoint(QVector3D pos){
+    posInit = pos;
+    createGlObject();
+}
+void gl_repere::setPositionPoint(QVector3D pos, QVector3D posSuiv){
+    posInit = pos;
+    createGlObject();
+}
+void gl_repere::setDisplay(bool mode){
+    displayIt = mode;
+}
+
+/* OPENGL */
 
 void gl_repere::createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                             QVector3D coord, QVector3D couleur){
@@ -52,7 +66,7 @@ void gl_repere::createGlObject(){
         createPoint(vertices, colors, coord, colr);
     }
 
-
+    vertData.clear();
     for (int i = 0; i < nbPointControl + 2*divisionAxe; ++i) {
         // coordonnées sommets
         for (int j = 0; j < 3; j++)
@@ -79,8 +93,9 @@ void gl_repere::display(QOpenGLShaderProgram &m_program){
     m_program.enableAttributeArray("posAttr");
     m_program.enableAttributeArray("colAttr");
 
-    for(int debut = 0; debut <= divisionAxe*nbPointStructure; debut+=nbPointStructure)
-        glDrawArrays(GL_LINE_STRIP, debut, nbPointStructure);
+    if(displayIt)
+        for(int debut = 0; debut <= divisionAxe*nbPointStructure; debut+=nbPointStructure)
+            glDrawArrays(type, debut, nbPointStructure);
 
     m_program.disableAttributeArray("posAttr");
     m_program.disableAttributeArray("colAttr");

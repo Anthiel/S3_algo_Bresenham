@@ -43,6 +43,36 @@ GLArea::~GLArea()
 }
 
 
+/* ALGOS & FONCTIONS BASIQUES */
+
+void GLArea::setData(QVector<double> listX, QVector<double> listY, int etapeMaxBresenham){
+    std::cout << "nombre bresenham point : " << listX.size() << std::endl;
+    myBresenham.setData(listX, listY);
+    myBresenham.build(etapeMaxBresenham,MyObjects);
+}
+
+void GLArea::setPoint(int ID, int x, int y){
+
+    QVector3D tmp = QVector3D(x/10.0, y/10.0, 0);
+    if(ID < 1){
+        pointA = tmp;
+        MyObjects[3]->setPositionPoint(pointA);
+    }
+    else{
+        pointB = tmp;
+        MyObjects[4]->setPositionPoint(pointB);
+    }
+    drawSegment();
+    update();
+}
+
+void GLArea::drawSegment(){
+    MyObjects[5]->setPositionPoint(pointA, pointB);
+    MyObjects[5]->createGlObject();
+}
+
+/* OPENGL AREA */
+
 void GLArea::initializeGL()
 {
     qDebug() << __FUNCTION__ ;
@@ -66,26 +96,23 @@ void GLArea::initializeGL()
     //m_matrixUniform = m_program->uniformLocation("matrix");
 }
 
-void GLArea::setPoint(int x1, int y1, int x2, int y2){
-    pointA = QVector3D(x1/10.0, y1/10.0, 0);
-    pointB = QVector3D(x2/10.0, y2/10.0, 0);
-    update();
-}
-
 
 void GLArea::makeGLObjects()
 {
     //les objets - Reperes
-    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}));
-    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}));
-    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, true));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}, true));
+    MyObjects.push_back(new gl_repere(2, {0.0, 0.0, 0.0}, 2, {0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}, true));
 
     //les objets - Point segment
-    MyObjects.push_back(new gl_point({0.1, 0.0, 0.0}, {1.0, 1.0, 0.0}, 0.01));
-    MyObjects.push_back(new gl_point({0.0, 0.2, 0.2}, {1.0, 1.0, 0.0}, 0.01));
+    MyObjects.push_back(new gl_point(pointA, {1.0, 1.0, 0.0}, 0.01, true));
+    MyObjects.push_back(new gl_point(pointB, {1.0, 1.0, 0.0}, 0.01, true));
 
     //les objets - segment
-    MyObjects.push_back(new gl_segment({0.1, 0.0, 0.0},{0.0, 0.2, 0.2}, {1.0, 1.0, 0.0}));
+    MyObjects.push_back(new gl_segment(pointA, pointB, {1.0, 1.0, 0.0}, true));
+
+    //les objets - bresenham
+    myBresenham.initBuild(MyObjects);
 
     //création des objets GL
     for(int i = 0; i < MyObjects.size(); i++)
@@ -201,7 +228,6 @@ void GLArea::setRadius(double radius)
         update();
     }
 }
-
 
 
 

@@ -12,7 +12,12 @@
 class gl_segment : public myGlObject
 {
 public:
-    gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color);
+    gl_segment(QVector3D pos, QVector3D posSuiv, QVector3D color, bool isDisplay);
+
+    void setPositionPoint(QVector3D pos) override;
+    void setPositionPoint(QVector3D pos, QVector3D posSuiv) override;
+    void setDisplay(bool mode) override;
+
     void createPoint(std::vector<GLfloat> &vertices, std::vector<GLfloat> &colors,
                                 QVector3D coord, QVector3D couleur) override;
     void createGlObject() override;
@@ -22,6 +27,7 @@ public:
 
     QOpenGLBuffer m_vbo;
     QVector<GLfloat> vertData;
+    bool displayIt = true;
 
     int nbPointControl = 2; // 8 points dans un cube
     int division = 1; // 12 triangles dans un cube
