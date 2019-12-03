@@ -41,15 +41,6 @@ void gl_segment::createGlObject(){
     m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
 }
 
-/*
-void gl_segment::display(){
-
-    std::cout << "size vertdata : " << vertData.size() << " size max : " << division*nbPointStructure << std::endl;
-
-    for(int debut = 0; debut < division*nbPointStructure; debut+=nbPointStructure)
-        glDrawArrays(GL_LINES, debut, nbPointStructure);
-}
-*/
 
 void gl_segment::display(QOpenGLShaderProgram &m_program){
 
@@ -61,12 +52,9 @@ void gl_segment::display(QOpenGLShaderProgram &m_program){
     m_program.enableAttributeArray("posAttr");
     m_program.enableAttributeArray("colAttr");
 
-    int debut = 0;
-
-    for(int i = 0; i < division; i++){
+    for(int debut = 0; debut <= division*nbPointStructure; debut+=nbPointStructure)
         glDrawArrays(GL_LINES, debut, nbPointStructure);
-        debut += nbPointStructure;
-    }
+
     m_program.disableAttributeArray("posAttr");
     m_program.disableAttributeArray("colAttr");
     m_vbo.release();

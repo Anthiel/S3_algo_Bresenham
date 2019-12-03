@@ -67,15 +67,7 @@ void gl_repere::createGlObject(){
     m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
 
 }
-/*
-void gl_repere::display(){
 
-
-    for(int debut = 0; debut < divisionAxe*nbPointStructure; debut+=nbPointStructure)
-        glDrawArrays(GL_LINE_STRIP, debut, nbPointStructure);
-
-}
-*/
 
 void gl_repere::display(QOpenGLShaderProgram &m_program){
 
@@ -87,16 +79,9 @@ void gl_repere::display(QOpenGLShaderProgram &m_program){
     m_program.enableAttributeArray("posAttr");
     m_program.enableAttributeArray("colAttr");
 
-    int debut = 0;
+    for(int debut = 0; debut <= divisionAxe*nbPointStructure; debut+=nbPointStructure)
+        glDrawArrays(GL_LINE_STRIP, debut, nbPointStructure);
 
-    glDrawArrays(GL_LINE_STRIP, debut, nbPointControl);
-
-    debut += nbPointControl;
-
-    for(int i = 0; i < divisionAxe; i++){
-        glDrawArrays(GL_LINE_STRIP, debut, 2);
-        debut += 2;
-    }
     m_program.disableAttributeArray("posAttr");
     m_program.disableAttributeArray("colAttr");
     m_vbo.release();

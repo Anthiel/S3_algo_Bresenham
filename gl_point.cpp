@@ -125,12 +125,8 @@ void gl_point::createGlObject(){
     m_vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
 
 }
-/*
-void gl_point::display(){
-    for(int debut = 0; debut < division*nbPointStructure; debut+=nbPointStructure)
-        glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
-}
-*/
+
+
 void gl_point::display(QOpenGLShaderProgram &m_program){
 
     m_vbo.bind();
@@ -141,12 +137,9 @@ void gl_point::display(QOpenGLShaderProgram &m_program){
     m_program.enableAttributeArray("posAttr");
     m_program.enableAttributeArray("colAttr");
 
-    int debut = 0;
-
-    for(int i = 0; i < division; i++){
+    for(int debut = 0; debut <= division*nbPointStructure; debut+=nbPointStructure)
         glDrawArrays(GL_TRIANGLES, debut, nbPointStructure);
-        debut += 3;
-    }
+
     m_program.disableAttributeArray("posAttr");
     m_program.disableAttributeArray("colAttr");
     m_vbo.release();
