@@ -27,13 +27,18 @@ public:
 
     void addPixel(QVector<double> &listX, QVector<double> &listY, double x, double y);
     void drawBresenham(int x1, int y1, int x2, int y2);
+    void prendrePartieVector();
 
 
     int x1 = 0, y1 = 0; // premier point
     int x2 = 0, y2 = 0; // deuxieme point
 
+    int maxBresenham = 0;
     int etapeMaxBresenham = 0;
     int etape = 0;
+
+    QVector <double> lX, lY;
+    QVector<double> listX, listY;
 
 
 private slots:

@@ -26,6 +26,7 @@ public:
     ~GLArea() override;
 
     void setData(QVector<double> listX, QVector<double> listY, int etapeMaxBresenham);
+    void setData(int etapeMaxBresenham);
     void setPoint(int ID, int x, int y);
     void drawSegment();
 

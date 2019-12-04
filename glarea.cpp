@@ -46,9 +46,13 @@ GLArea::~GLArea()
 /* ALGOS & FONCTIONS BASIQUES */
 
 void GLArea::setData(QVector<double> listX, QVector<double> listY, int etapeMaxBresenham){
-    std::cout << "nombre bresenham point : " << listX.size() << std::endl;
     myBresenham.setData(listX, listY);
     myBresenham.build(etapeMaxBresenham,MyObjects);
+    update();
+}
+void GLArea::setData(int etapeMaxBresenham){
+    myBresenham.build(etapeMaxBresenham,MyObjects);
+    update();
 }
 
 void GLArea::setPoint(int ID, int x, int y){

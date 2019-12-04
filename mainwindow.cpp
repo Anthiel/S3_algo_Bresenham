@@ -40,7 +40,10 @@ void MainWindow::resetBresenham(){
     ui->plot->graph(1)->data()->clear();
     etapeMaxBresenham = 0;
     etape = 0;
-
+    prendrePartieVector();
+    ui->openGLWidget->setData(etapeMaxBresenham);
+    maxBresenham = 0;
+    ui->openGLWidget->update();
     ui->plot->replot();
 }
 
@@ -103,7 +106,7 @@ void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> 
 
     }while(princValue != maxPrincValue && etape < etapeMaxBresenham);
 
-    if(etapeMaxBresenham == 1) return;
+    if(etapeMaxBresenham <= 0) return;
 
     switch(ID){
         case 0: addPixel(listX, listY, princValue, otherValue); break;
@@ -114,7 +117,7 @@ void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> 
 
 void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
 
-    QVector<double> listX, listY;
+    listX.clear(), listY.clear();
     int dx = x2 - x1;
     int dy = y2 - y1;
 
@@ -202,9 +205,6 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
                     addPixel(listX, listY, x1, y1);
         }
     }
-
-    ui->plot->graph(1)->setData(listX,listY);
-    ui->openGLWidget->setData(listX, listY, etapeMaxBresenham);
 }
 
 
@@ -243,6 +243,14 @@ void MainWindow::on_pushButton_clicked()
     resetBresenham();
 }
 
+void MainWindow::prendrePartieVector(){
+    lY.clear() ; lX.clear();
+    for(int i=0; i<etapeMaxBresenham;i++){
+        lY.push_back(listY[i]);
+        lX.push_back(listX[i]);
+    }
+}
+
 void MainWindow::on_pushButton_2_clicked()
 {
     drawLineOnPlot(x1, y1, x2, y2);
@@ -250,6 +258,13 @@ void MainWindow::on_pushButton_2_clicked()
     etapeMaxBresenham = INT_MAX;
     drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
     etapeMaxBresenham = etape;
+    maxBresenham = etape;
+    prendrePartieVector();
+
+    ui->plot->graph(1)->setData(lX,lY);
+
+    ui->openGLWidget->setData(listX, listY, etapeMaxBresenham);
+
     ui->plot->replot();
     ui->openGLWidget->update();
 }
@@ -257,21 +272,31 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::on_EtapePrec_clicked()
 {
     drawLineOnPlot(x1, y1, x2, y2);
-
-    if(etapeMaxBresenham <=1)
+    if(etapeMaxBresenham <=0)
         return;
-    else{
-        etapeMaxBresenham--;
-        drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
-    }
+
+    etapeMaxBresenham--;
+    ui->openGLWidget->setData(etapeMaxBresenham);
+    prendrePartieVector();
+    ui->plot->graph(1)->setData(lX,lY);
+    ui->plot->replot();
+    ui->openGLWidget->update();
+    std::cout << "etapeMax : " << etapeMaxBresenham << std::endl;
 }
 
 void MainWindow::on_EtapeSuiv_clicked()
 {
     drawLineOnPlot(x1, y1, x2, y2);
 
+    if(maxBresenham <= etapeMaxBresenham)
+        return;
     etapeMaxBresenham++;
-    drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
+    ui->openGLWidget->setData(etapeMaxBresenham);
+    prendrePartieVector();
+    ui->plot->graph(1)->setData(lX,lY);
+    ui->plot->replot();
+    ui->openGLWidget->update();
+    std::cout << "etapeMax : " << etapeMaxBresenham << std::endl;
 }
 
 void MainWindow::on_supprBresenham_clicked()
