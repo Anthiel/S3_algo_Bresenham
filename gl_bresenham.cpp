@@ -16,7 +16,7 @@ void gl_bresenham::initBuild(std::vector <myGlObject*> &MyObjects){
 
     dataBegin = MyObjects.size();
     for(int i = 0; i < nombreBase; i++)
-        MyObjects.push_back(new gl_point({0.0, 0.0, 0.0}, {1.0, 0.0, 1.0}, 0.015, false));
+        MyObjects.push_back(new gl_point({0.0, 0.0, 0.0}, {1.0, 0.0, 1.0}, 0.05, false));
     isInit = true;
 }
 
