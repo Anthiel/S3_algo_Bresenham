@@ -15,6 +15,7 @@
 #include "gl_point.h"
 #include "gl_segment.h"
 #include "gl_bresenham.h"
+#include "espaceprojectif.h"
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions
@@ -33,6 +34,7 @@ public:
 
     std::vector <myGlObject*> MyObjects;
     gl_bresenham myBresenham;
+    espaceProjectif espaceProj;
 
 
 public slots:

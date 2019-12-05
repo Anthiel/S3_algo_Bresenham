@@ -36,7 +36,8 @@ SOURCES += \
     gl_repere.cpp \
     gl_point.cpp \
     gl_segment.cpp \
-    gl_bresenham.cpp
+    gl_bresenham.cpp \
+    espaceprojectif.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     myglobject.h \
     gl_point.h \
     gl_segment.h \
-    gl_bresenham.h
+    gl_bresenham.h \
+    espaceprojectif.h
 
 FORMS += \
         mainwindow.ui

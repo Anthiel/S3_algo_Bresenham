@@ -152,13 +152,34 @@ void GLArea::paintGL()
     m_program->bind(); // active le shader program
 
     QMatrix4x4 matrix;
+    std::cout << "matrix début" << std::endl;
+    espaceProj.printMatrix(matrix);
+
     GLfloat hr = m_radius, wr = hr * m_ratio;
     matrix.frustum(-wr, wr, -hr, hr, 1.0, 5.0);
-    matrix.translate(0, 0, -3.0);
+    std::cout << "matrix après frustum" << std::endl;
+    espaceProj.printMatrix(matrix);
+
+    espaceProj.translation(matrix, 0, 0, -3.0);
+    //matrix.translate(0, 0, -3.0);
+    std::cout << "matrix après translate" << std::endl;
+    espaceProj.printMatrix(matrix);
+    //std::cout << "matrix calcul" << std::endl;
+
+    QMatrix4x4 identite(1, 0, 0, 5,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 3, 0, 1);
+    QMatrix4x4 m(1, 2, 3, 4,
+                 5, 6, 7, 8,
+                 9, 10, 11, 12,
+                 13, 14, 15, 16);
+    QMatrix4x4 r = espaceProj.multiplicationMatrix4x4(identite, m);
+    //espaceProj.printMatrix(r);
 
     // Rotation de la scène pour l'animation
-    matrix.rotate(m_angle, 0, 1, 0);
-    matrix.rotate(m_angle, 1, 0, 0);
+    matrix.rotate(static_cast<float>(m_angle), 0, 1, 0);
+    matrix.rotate(static_cast<float>(m_angle), 1, 0, 0);
 
 
     m_program->setUniformValue("matrix", matrix);
