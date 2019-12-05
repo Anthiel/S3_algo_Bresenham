@@ -3,6 +3,7 @@
 
 #include <QMatrix4x4>
 #include <iostream>
+#include <cmath>
 
 class espaceProjectif
 {
