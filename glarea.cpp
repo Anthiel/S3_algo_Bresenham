@@ -167,8 +167,6 @@ void GLArea::paintGL()
     espaceProj.rotation(matrix, m_angleY*M_PI/180, 0, 1, 0);
     espaceProj.rotation(matrix, m_angleZ*M_PI/180, 0, 0, 1);
 
-
-
     //matrix.rotate(static_cast<float>(m_angle), 0, 1, 0);
     //matrix.rotate(static_cast<float>(m_angle), 1, 0, 0);
 

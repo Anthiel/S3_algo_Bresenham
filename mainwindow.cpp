@@ -252,13 +252,6 @@ void MainWindow::on_spinBox_4_valueChanged(const QString &arg1)
     ui->openGLWidget->setPoint(1, x2,y2);
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    drawLineOnPlot(x1, y1, x2, y2);
-    ui->openGLWidget->drawSegment();
-    resetBresenham();
-}
-
 void MainWindow::prendrePartieVector(){
     lY.clear() ; lX.clear();
     for(int i=0; i<etapeMaxBresenham;i++){

@@ -179,13 +179,6 @@
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Dessiner droite</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="BresenhamButton">
         <property name="text">
          <string>Bresenham</string>

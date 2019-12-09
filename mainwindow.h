@@ -50,8 +50,6 @@ private slots:
 
     void on_spinBox_4_valueChanged(const QString &arg1);
 
-    void on_pushButton_clicked();
-
     void on_EtapePrec_clicked();
 
     void on_EtapeSuiv_clicked();
