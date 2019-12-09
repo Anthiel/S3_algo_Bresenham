@@ -160,10 +160,12 @@ void GLArea::paintGL()
     //matrix.translate(0, 0, -3.0);
 
     // Rotation de la scène pour l'animation
-    espaceProj.rotation(matrix, m_angle*3.1415926/180, 0, 1, 1);
+    espaceProj.rotation(matrix, m_angleX*M_PI/180, 1, 0, 0);
+    espaceProj.rotation(matrix, m_angleY*M_PI/180, 0, 1, 0);
+    espaceProj.rotation(matrix, m_angleZ*M_PI/180, 0, 0, 1);
+
     //matrix.rotate(static_cast<float>(m_angle), 0, 1, 0);
     //matrix.rotate(static_cast<float>(m_angle), 1, 0, 0);
-
 
     m_program->setUniformValue("matrix", matrix);
 
@@ -180,16 +182,49 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
 
     switch(ev->key()) {
         case Qt::Key_Space :
-            m_angle += 1;
-            std::cout << m_angle << std::endl;
-            if (m_angle >= 360) m_angle -= 360;
-            update();
-            break;
-        case Qt::Key_A :
             if (m_timer->isActive())
                 m_timer->stop();
             else m_timer->start();
             break;
+        //en avant sur X
+        case Qt::Key_Z :
+            m_angleX += 1;
+            if (m_angleX >= 360) m_angleX -= 360;
+            update();
+            break;
+        //en arrière sur X
+        case Qt::Key_S :
+            m_angleX -= 1;
+            if (m_angleX <= 360) m_angleX += 360;
+            update();
+            break;
+
+        //en avant sur Y
+        case Qt::Key_D :
+            m_angleY += 1;
+            if (m_angleY >= 360) m_angleY -= 360;
+            update();
+            break;
+        //en arrière sur Y
+        case Qt::Key_Q :
+            m_angleY -= 1;
+            if (m_angleY <= 360) m_angleY += 360;
+            update();
+            break;
+
+        //en avant sur Z
+        case Qt::Key_E :
+            m_angleZ += 1;
+            if (m_angleZ >= 360) m_angleZ -= 360;
+            update();
+            break;
+        //en arrière sur Z
+        case Qt::Key_A :
+             m_angleZ -= 1;
+             if (m_angleZ <= 360) m_angleZ += 360;
+             update();
+             break;
+
         case Qt::Key_R :
             if (ev->text() == "r")
                  setRadius(m_radius-0.05);
@@ -220,10 +255,7 @@ void GLArea::mouseMoveEvent(QMouseEvent *ev)
 
 void GLArea::onTimeout()
 {
-    qDebug() << __FUNCTION__ ;
-    m_anim += 0.01;
-    if (m_anim > 1) m_anim = 0;
-    update();
+
 }
 
 void GLArea::setRadius(double radius)

@@ -60,9 +60,11 @@ protected:
 
 
 private:
-    double m_angle = 0;
+    double m_angleX = 0;
+    double m_angleY = 0;
+    double m_angleZ = 0;
+
     QTimer *m_timer = nullptr;
-    double m_anim = 0;
     double m_radius = 0.5;
     double m_ratio = 1;
     QVector<GLfloat> vertData;

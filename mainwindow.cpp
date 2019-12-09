@@ -106,7 +106,6 @@ void MainWindow::processPartOfBresenham(QVector<double> &listX, QVector<double> 
 
     }while(princValue != maxPrincValue && etape < etapeMaxBresenham);
 
-    std::cout<< "étape : " << etape << std::endl;
     if(etapeMaxBresenham <= 0) return;
 
     switch(ID){
@@ -214,9 +213,6 @@ void MainWindow::drawBresenham(int x1, int y1, int x2, int y2){
                 }
         }
     }
-    for(int i = 0; i < listX.size(); i++){
-        std::cout << "list n°" << i << " listX : "<< listX[i] << " listY : " << listY[i] << std::endl;
-    }
 }
 
 
@@ -228,6 +224,7 @@ void MainWindow::on_spinBox_valueChanged(const QString &arg1)
 {
     resetBresenham();
     x1 = arg1.toInt();
+    drawLineOnPlot(x1, y1, x2, y2);
     ui->openGLWidget->setPoint(0,x1,y1);
 }
 
@@ -235,6 +232,7 @@ void MainWindow::on_spinBox_2_valueChanged(const QString &arg1)
 {
     resetBresenham();
     y1 = arg1.toInt();
+    drawLineOnPlot(x1, y1, x2, y2);
     ui->openGLWidget->setPoint(0,x1,y1);
 }
 
@@ -242,6 +240,7 @@ void MainWindow::on_spinBox_3_valueChanged(const QString &arg1)
 {
     resetBresenham();
     x2 = arg1.toInt();
+    drawLineOnPlot(x1, y1, x2, y2);
     ui->openGLWidget->setPoint(1,x2,y2);
 }
 
@@ -249,6 +248,7 @@ void MainWindow::on_spinBox_4_valueChanged(const QString &arg1)
 {
     resetBresenham();
     y2 = arg1.toInt();
+    drawLineOnPlot(x1, y1, x2, y2);
     ui->openGLWidget->setPoint(1, x2,y2);
 }
 
@@ -275,18 +275,9 @@ void MainWindow::on_BresenhamButton_clicked()
     drawBresenham(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2));
     etapeMaxBresenham = etape;
     maxBresenham = etape;
-    /*
-    std::cout << "on bresenham : après draw" << std::endl;
-    for(int i = 0; i < listX.size(); i++){
-        std::cout << "list n°" << i << " listX : "<< listX[i] << " listY : " << listY[i] << std::endl;
-    }*/
+
     prendrePartieVector();
-/*
-    std::cout << "on bresenham : après prendrepartie" << std::endl;
-    std::cout << "valeur de etapeMaxbresenham " << etapeMaxBresenham << std::endl;
-    for(int i = 0; i < lX.size(); i++){
-        std::cout << "list n°" << i << " listX : "<< lX[i] << " listY : " << lY[i] << std::endl;
-    }*/
+
     ui->plot->graph(1)->setData(lX,lY);
 
     ui->openGLWidget->setData(listX, listY, etapeMaxBresenham);
@@ -307,7 +298,6 @@ void MainWindow::on_EtapePrec_clicked()
     ui->plot->graph(1)->setData(lX,lY);
     ui->plot->replot();
     ui->openGLWidget->update();
-    std::cout << "etapeMax : " << etapeMaxBresenham << std::endl;
 }
 
 void MainWindow::on_EtapeSuiv_clicked()
@@ -322,7 +312,6 @@ void MainWindow::on_EtapeSuiv_clicked()
     ui->plot->graph(1)->setData(lX,lY);
     ui->plot->replot();
     ui->openGLWidget->update();
-    std::cout << "etapeMax : " << etapeMaxBresenham << std::endl;
 }
 
 void MainWindow::on_supprBresenham_clicked()
