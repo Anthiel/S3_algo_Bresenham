@@ -25,9 +25,6 @@ void gl_bresenham::build(int nbBuild, std::vector <myGlObject*> &MyObjects){
     if(!isInit)
         initBuild(MyObjects);
 
-    std::cout << "nombre build : " << nbBuild << std::endl;
-
-
     for(int i = 0; i < nombreBase; i++){
         if(i<dataX.size() && i<dataY.size())
             MyObjects[dataBegin+i]->setPositionPoint({static_cast<float>(dataX[i]/10.0),

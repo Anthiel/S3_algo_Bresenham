@@ -77,9 +77,9 @@ void espaceProjectif::rotation(QMatrix4x4 &matrix, double angle, int x, int y, i
 
 void espaceProjectif::scale(QMatrix4x4 &matrix, double x, double y, double z){
     QMatrix4x4 scaleMatrix(x, 0, 0, 0,
-                            0, y, 0, 0,
-                            0, 0, z, 0,
-                            0, 0, 0, 1);
+                           0, y, 0, 0,
+                           0, 0, z, 0,
+                           0, 0, 0, 1);
     matrix = multiplicationMatrix4x4(matrix, scaleMatrix);
 }
 

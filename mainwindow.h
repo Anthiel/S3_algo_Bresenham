@@ -52,13 +52,13 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_pushButton_2_clicked();
-
     void on_EtapePrec_clicked();
 
     void on_EtapeSuiv_clicked();
 
     void on_supprBresenham_clicked();
+
+    void on_BresenhamButton_clicked();
 
 private:
     Ui::MainWindow *ui;

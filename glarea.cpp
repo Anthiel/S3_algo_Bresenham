@@ -152,8 +152,6 @@ void GLArea::paintGL()
     m_program->bind(); // active le shader program
 
     QMatrix4x4 matrix;
-    std::cout << "matrix début" << std::endl;
-    espaceProj.printMatrix(matrix);
 
     GLfloat hr = m_radius, wr = hr * m_ratio;
     matrix.frustum(-wr, wr, -hr, hr, 1.0, 5.0);
