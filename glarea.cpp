@@ -154,15 +154,20 @@ void GLArea::paintGL()
     QMatrix4x4 matrix;
 
     GLfloat hr = m_radius, wr = hr * m_ratio;
-    matrix.frustum(-wr, wr, -hr, hr, 1.0, 5.0);
+    matrix.frustum(-wr, wr, -hr, hr, 1.0, 10.0);
 
     espaceProj.translation(matrix, 0, 0, -3.0);
     //matrix.translate(0, 0, -3.0);
 
-    // Rotation de la scène pour l'animation
+    //mouvement dans la scène avec la souris
+    espaceProj.translation(matrix, m_posX, m_posY, m_posZ);
+
+    // Rotation de la scène pour l'animation avec ZQSD AE
     espaceProj.rotation(matrix, m_angleX*M_PI/180, 1, 0, 0);
     espaceProj.rotation(matrix, m_angleY*M_PI/180, 0, 1, 0);
     espaceProj.rotation(matrix, m_angleZ*M_PI/180, 0, 0, 1);
+
+
 
     //matrix.rotate(static_cast<float>(m_angle), 0, 1, 0);
     //matrix.rotate(static_cast<float>(m_angle), 1, 0, 0);
@@ -233,25 +238,6 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
     }
 }
 
-void GLArea::keyReleaseEvent(QKeyEvent *ev)
-{
-    qDebug() << __FUNCTION__ << ev->text();
-}
-
-void GLArea::mousePressEvent(QMouseEvent *ev)
-{
-    qDebug() << __FUNCTION__ << ev->x() << ev->y() << ev->button();
-}
-
-void GLArea::mouseReleaseEvent(QMouseEvent *ev)
-{
-    qDebug() << __FUNCTION__ << ev->x() << ev->y() << ev->button();
-}
-
-void GLArea::mouseMoveEvent(QMouseEvent *ev)
-{
-    qDebug() << __FUNCTION__ << ev->x() << ev->y();
-}
 
 void GLArea::onTimeout()
 {
@@ -267,6 +253,50 @@ void GLArea::setRadius(double radius)
         emit radiusChanged(radius);
         update();
     }
+}
+
+void GLArea::keyReleaseEvent(QKeyEvent *ev)
+{
+    qDebug() << __FUNCTION__ << ev->text();
+}
+
+
+void GLArea::mousePressEvent(QMouseEvent *ev)
+{
+    lastPos = ev->pos();
+}
+
+void GLArea::wheelEvent(QWheelEvent *ev){
+    m_posZ += static_cast<float>(ev->delta() * 1.0/100.0);
+    update();
+}
+
+void GLArea::mouseReleaseEvent(QMouseEvent *ev)
+{
+    qDebug() << __FUNCTION__ << ev->x() << ev->y() << ev->button();
+}
+
+
+void GLArea::mouseMoveEvent(QMouseEvent *ev)
+{
+    int dx = ev->x() - lastPos.x();
+    int dy = ev->y() - lastPos.y();
+
+    if (ev->buttons() & Qt::LeftButton) {
+        m_angleX += dy;
+        m_angleY += dx;
+        update();
+    } else if (ev->buttons() & Qt::RightButton) {
+        m_posX += dx/10.0f;
+        m_posY -= dy/10.0f;
+        update();
+    } else if (ev->buttons() & Qt::MidButton) {
+        m_posX += dx/10.0f;
+        m_posY += dy;
+        update();
+    }
+
+    lastPos = ev->pos();
 }
 
 

@@ -55,6 +55,7 @@ protected:
     void keyPressEvent(QKeyEvent *ev) override;
     void keyReleaseEvent(QKeyEvent *ev) override;
     void mousePressEvent(QMouseEvent *ev) override;
+    void wheelEvent(QWheelEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
     void mouseMoveEvent(QMouseEvent *ev) override;
 
@@ -63,6 +64,11 @@ private:
     double m_angleX = 0;
     double m_angleY = 0;
     double m_angleZ = 0;
+
+    double m_posX = 0;
+    double m_posY = 0;
+    double m_posZ = 0;
+    QPoint lastPos;
 
     QTimer *m_timer = nullptr;
     double m_radius = 0.5;
