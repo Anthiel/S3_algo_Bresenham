@@ -313,3 +313,8 @@ void MainWindow::on_supprBresenham_clicked()
 }
 
 
+
+void MainWindow::on_quaternionButton_clicked()
+{
+    ui->openGLWidget->processQuaternion();
+}

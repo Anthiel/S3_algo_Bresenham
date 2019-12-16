@@ -58,6 +58,8 @@ private slots:
 
     void on_BresenhamButton_clicked();
 
+    void on_quaternionButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

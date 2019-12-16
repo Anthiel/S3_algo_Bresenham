@@ -15,6 +15,14 @@ void espaceProjectif::printMatrix(QMatrix4x4 matrix){
     std::cout << std::endl;
 }
 
+QMatrix4x4 espaceProjectif::identityMatrix4x4(){
+    QMatrix4x4 newMatrix(1, 0, 0, 0,
+                         0, 1, 0, 0,
+                         0, 0, 1, 0,
+                         0, 0, 0, 1);
+    return newMatrix;
+}
+
 QMatrix4x4 espaceProjectif::transposeMatrix4x4(QMatrix4x4 matrix){
 
     QMatrix4x4 newMatrix(matrix.column(0)[0], matrix.column(0)[1], matrix.column(0)[2], matrix.column(0)[3],

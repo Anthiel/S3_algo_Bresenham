@@ -27,6 +27,7 @@ GLArea::GLArea(QWidget *parent) :
     m_timer->setInterval(50);  // msec
     connect (m_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
     connect (this, SIGNAL(radiusChanged(double)), this, SLOT(setRadius(double)));
+    m_timer->start();
 }
 
 GLArea::~GLArea()
@@ -73,6 +74,19 @@ void GLArea::setPoint(int ID, int x, int y){
 void GLArea::drawSegment(){
     MyObjects[5]->setPositionPoint(pointA, pointB);
     MyObjects[5]->createGlObject();
+}
+
+void GLArea::processQuaternion(){
+
+    m_anim = 0;
+    firstPosition = true;
+
+    QMatrix4x4 matrixRotation = espaceProjectif::identityMatrix4x4();
+    quatBegin = quaternion::rotationMatrixToQuaternion(matrixRotation);
+    espaceProjectif::rotation(matrixRotation, 90*M_PI/180, 1, 0, 0);
+    quatEnd = quaternion::rotationMatrixToQuaternion(matrixRotation);
+    startQuaternion = true;
+    update();
 }
 
 /* OPENGL AREA */
@@ -144,11 +158,7 @@ void GLArea::resizeGL(int w, int h)
 
 void GLArea::paintGL()
 {
-    qDebug() << __FUNCTION__ ;
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
     m_program->bind(); // active le shader program
 
     QMatrix4x4 matrix;
@@ -156,19 +166,31 @@ void GLArea::paintGL()
     GLfloat hr = m_radius, wr = hr * m_ratio;
     matrix.frustum(-wr, wr, -hr, hr, 1.0, 10.0);
 
-    espaceProj.translation(matrix, 0, 0, -3.0);
+    espaceProjectif::translation(matrix, 0, 0, -3.0);
     //matrix.translate(0, 0, -3.0);
 
     //mouvement dans la scène avec la souris
-    espaceProj.translation(matrix, m_posX, m_posY, m_posZ);
+    espaceProjectif::translation(matrix, m_posX, m_posY, m_posZ);
 
     // Rotation de la scène pour l'animation avec ZQSD AE
-    espaceProj.rotation(matrix, m_angleX*M_PI/180, 1, 0, 0);
-    espaceProj.rotation(matrix, m_angleY*M_PI/180, 0, 1, 0);
-    espaceProj.rotation(matrix, m_angleZ*M_PI/180, 0, 0, 1);
+    espaceProjectif::rotation(matrix, m_angleX*M_PI/180, 1, 0, 0);
+    espaceProjectif::rotation(matrix, m_angleY*M_PI/180, 0, 1, 0);
+    espaceProjectif::rotation(matrix, m_angleZ*M_PI/180, 0, 0, 1);
 
     //matrix.rotate(static_cast<float>(m_angle), 0, 1, 0);
     //matrix.rotate(static_cast<float>(m_angle), 1, 0, 0);
+
+
+    //quaternion
+
+    if(startQuaternion){
+        QVector4D quatPosition = quaternion::slerp(quatBegin, quatEnd, m_anim);
+        quaternion::quaternionToAxesAngle(quatAngle, quatX, quatY, quatZ, quatPosition);
+        if(m_anim >= 1)
+            startQuaternion = false;
+    }
+    matrix.rotate(quatAngle, quatX, quatY, quatZ);
+
 
     m_program->setUniformValue("matrix", matrix);
 
@@ -239,7 +261,9 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
 
 void GLArea::onTimeout()
 {
-
+    if (m_anim >= 1) m_anim = 0;
+    m_anim += 0.01;
+    update();
 }
 
 void GLArea::setRadius(double radius)

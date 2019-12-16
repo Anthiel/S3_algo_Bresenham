@@ -37,7 +37,8 @@ SOURCES += \
     gl_point.cpp \
     gl_segment.cpp \
     gl_bresenham.cpp \
-    espaceprojectif.cpp
+    espaceprojectif.cpp \
+    quaternion.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,7 +49,8 @@ HEADERS += \
     gl_point.h \
     gl_segment.h \
     gl_bresenham.h \
-    espaceprojectif.h
+    espaceprojectif.h \
+    quaternion.h
 
 FORMS += \
         mainwindow.ui

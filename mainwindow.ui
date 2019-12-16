@@ -210,6 +210,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QPushButton" name="quaternionButton">
+        <property name="text">
+         <string>quaternions</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

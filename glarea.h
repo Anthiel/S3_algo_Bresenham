@@ -16,6 +16,7 @@
 #include "gl_segment.h"
 #include "gl_bresenham.h"
 #include "espaceprojectif.h"
+#include "quaternion.h"
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions
@@ -30,11 +31,10 @@ public:
     void setData(int etapeMaxBresenham);
     void setPoint(int ID, int x, int y);
     void drawSegment();
-
+    void processQuaternion();
 
     std::vector <myGlObject*> MyObjects;
     gl_bresenham myBresenham;
-    espaceProjectif espaceProj;
 
 
 public slots:
@@ -73,6 +73,7 @@ private:
     QTimer *m_timer = nullptr;
     double m_radius = 0.5;
     double m_ratio = 1;
+    double m_anim = 0;
     QVector<GLfloat> vertData;
 
     QOpenGLShaderProgram *m_program;
@@ -82,6 +83,14 @@ private:
 
     QVector3D pointA{0.0, 0.0, 0.0};
     QVector3D pointB{0.0, 0.0, 0.0};
+
+    // quaternion
+    double quatAngle = 0, quatX = 0, quatY = 0, quatZ = 0;
+
+    bool startQuaternion = false;
+    QVector4D quatBegin;
+    QVector4D quatEnd;
+    QMatrix4x4 savedMatrix;
 };
 
 #endif // GLAREA_H

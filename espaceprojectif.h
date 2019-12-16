@@ -9,14 +9,15 @@ class espaceProjectif
 {
 public:
     espaceProjectif();
-    void printMatrix(QMatrix4x4 matrix);
+    static void printMatrix(QMatrix4x4 matrix);
+    static QMatrix4x4 identityMatrix4x4();
 
-    QMatrix4x4 transposeMatrix4x4(QMatrix4x4 matrix);
-    QMatrix4x4 multiplicationMatrix4x4(QMatrix4x4 matrix1, QMatrix4x4 matrix2);
+    static QMatrix4x4 transposeMatrix4x4(QMatrix4x4 matrix);
+    static QMatrix4x4 multiplicationMatrix4x4(QMatrix4x4 matrix1, QMatrix4x4 matrix2);
 
-    void rotation(QMatrix4x4 &matrix, double angle, int x, int y, int z);
-    void scale(QMatrix4x4 &matrix, double x, double y, double z);
-    void translation(QMatrix4x4 &matrix, double x, double y, double z);
+    static void rotation(QMatrix4x4 &matrix, double angle, int x, int y, int z);
+    static void scale(QMatrix4x4 &matrix, double x, double y, double z);
+    static void translation(QMatrix4x4 &matrix, double x, double y, double z);
 };
 
 #endif // ESPACEPROJECTIF_H
