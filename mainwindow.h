@@ -60,6 +60,8 @@ private slots:
 
     void on_quaternionButton_clicked();
 
+    void on_prendrePosQuat_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

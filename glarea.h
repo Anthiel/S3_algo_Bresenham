@@ -32,6 +32,7 @@ public:
     void setPoint(int ID, int x, int y);
     void drawSegment();
     void processQuaternion();
+    void processPositionQuat();
 
     std::vector <myGlObject*> MyObjects;
     gl_bresenham myBresenham;
@@ -85,6 +86,9 @@ private:
     QVector3D pointB{0.0, 0.0, 0.0};
 
     // quaternion
+    double ancienAngleX = 0, ancienAngleY = 0, ancienAngleZ = 0;
+    double ancienPosX = 0, ancienPosY = 0, ancienPosZ = 0;
+
     double quatAngle = 0, quatX = 0, quatY = 0, quatZ = 0;
 
     bool startQuaternion = false;

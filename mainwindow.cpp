@@ -312,9 +312,13 @@ void MainWindow::on_supprBresenham_clicked()
     resetBresenham();
 }
 
-
-
 void MainWindow::on_quaternionButton_clicked()
 {
     ui->openGLWidget->processQuaternion();
+}
+
+void MainWindow::on_prendrePosQuat_clicked()
+{
+    ui->openGLWidget->processPositionQuat();
+    ui->etatQuat->setText("Etat : OK");
 }

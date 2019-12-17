@@ -79,14 +79,28 @@ void GLArea::drawSegment(){
 void GLArea::processQuaternion(){
 
     m_anim = 0;
-    firstPosition = true;
 
     QMatrix4x4 matrixRotation = espaceProjectif::identityMatrix4x4();
+    espaceProjectif::rotation(matrixRotation, (m_angleX*M_PI/180 - ancienAngleX*M_PI/180), 1, 0, 0);
+    espaceProjectif::rotation(matrixRotation, (m_angleY*M_PI/180 - ancienAngleY*M_PI/180), 0, 1, 0);
+    espaceProjectif::rotation(matrixRotation, (m_angleZ*M_PI/180 - ancienAngleZ*M_PI/180), 0, 0, 1);
     quatBegin = quaternion::rotationMatrixToQuaternion(matrixRotation);
-    espaceProjectif::rotation(matrixRotation, 90*M_PI/180, 1, 0, 0);
+
+    matrixRotation = espaceProjectif::identityMatrix4x4();
     quatEnd = quaternion::rotationMatrixToQuaternion(matrixRotation);
+
     startQuaternion = true;
     update();
+}
+
+void GLArea::processPositionQuat(){
+    ancienAngleX = m_angleX;
+    ancienAngleY = m_angleY;
+    ancienAngleZ = m_angleZ;
+
+    ancienPosX = m_posX;
+    ancienPosY = m_posY;
+    ancienPosZ = m_posZ;
 }
 
 /* OPENGL AREA */
@@ -186,8 +200,12 @@ void GLArea::paintGL()
     if(startQuaternion){
         QVector4D quatPosition = quaternion::slerp(quatBegin, quatEnd, m_anim);
         quaternion::quaternionToAxesAngle(quatAngle, quatX, quatY, quatZ, quatPosition);
-        if(m_anim >= 1)
+        espaceProjectif::translation(matrix, -(m_posX-ancienPosX)*m_anim, -(m_posY-ancienPosY)*m_anim, -(m_posZ-ancienPosZ)*m_anim);
+
+        if(m_anim >= 1){
             startQuaternion = false;
+            quatAngle = 0;
+        }
     }
     matrix.rotate(quatAngle, quatX, quatY, quatZ);
 
