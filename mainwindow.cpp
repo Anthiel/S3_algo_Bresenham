@@ -322,3 +322,14 @@ void MainWindow::on_prendrePosQuat_clicked()
     ui->openGLWidget->processPositionQuat();
     ui->etatQuat->setText("Etat : OK");
 }
+
+void MainWindow::on_actionAide_triggered()
+{
+    aideWindow AideWindow;
+    AideWindow.exec();
+}
+
+void MainWindow::on_actionVersion_et_auteurs_triggered()
+{
+
+}

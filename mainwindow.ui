@@ -313,6 +313,14 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuAide">
+    <property name="title">
+     <string>À propos</string>
+    </property>
+    <addaction name="actionAide"/>
+    <addaction name="actionVersion_et_auteurs"/>
+   </widget>
+   <addaction name="menuAide"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -323,6 +331,16 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionAide">
+   <property name="text">
+    <string>Aide</string>
+   </property>
+  </action>
+  <action name="actionVersion_et_auteurs">
+   <property name="text">
+    <string>Version et auteurs</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QVector>
 #include "qcustomplot.h"
+#include "aidewindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -61,6 +62,10 @@ private slots:
     void on_quaternionButton_clicked();
 
     void on_prendrePosQuat_clicked();
+
+    void on_actionAide_triggered();
+
+    void on_actionVersion_et_auteurs_triggered();
 
 private:
     Ui::MainWindow *ui;
