@@ -39,7 +39,8 @@ SOURCES += \
     gl_bresenham.cpp \
     espaceprojectif.cpp \
     quaternion.cpp \
-    aidewindow.cpp
+    aidewindow.cpp \
+    versionauteurwindow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -52,11 +53,13 @@ HEADERS += \
     gl_bresenham.h \
     espaceprojectif.h \
     quaternion.h \
-    aidewindow.h
+    aidewindow.h \
+    versionauteurwindow.h
 
 FORMS += \
         mainwindow.ui \
-    aidewindow.ui
+    aidewindow.ui \
+    versionauteurwindow.ui
 
 RESOURCES += \
         baseVBO.qrc

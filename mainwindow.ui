@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Projet FIG</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="SB">
+    <normaloff>../../../../Images/IMG_20190409_215731.jpg</normaloff>../../../../Images/IMG_20190409_215731.jpg</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">

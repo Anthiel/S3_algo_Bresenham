@@ -325,11 +325,12 @@ void MainWindow::on_prendrePosQuat_clicked()
 
 void MainWindow::on_actionAide_triggered()
 {
-    aideWindow AideWindow;
-    AideWindow.exec();
+    aideWindow AideWin;
+    AideWin.exec();
 }
 
 void MainWindow::on_actionVersion_et_auteurs_triggered()
 {
-
+    versionAuteurWindow verAutWin;
+    verAutWin.exec();
 }

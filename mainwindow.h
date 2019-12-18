@@ -6,6 +6,7 @@
 #include <QVector>
 #include "qcustomplot.h"
 #include "aidewindow.h"
+#include "versionauteurwindow.h"
 
 namespace Ui {
 class MainWindow;
