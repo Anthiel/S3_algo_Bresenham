@@ -33,6 +33,7 @@ public:
     void drawSegment();
     void processQuaternion();
     void processPositionQuat();
+    double degreeToRadian(double angle);
 
     std::vector <myGlObject*> MyObjects;
     gl_bresenham myBresenham;

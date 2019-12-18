@@ -78,17 +78,16 @@ void GLArea::drawSegment(){
 
 void GLArea::processQuaternion(){
 
-    m_anim = 0;
-
     QMatrix4x4 matrixRotation = espaceProjectif::identityMatrix4x4();
-    espaceProjectif::rotation(matrixRotation, (m_angleX*M_PI/180 - ancienAngleX*M_PI/180), 1, 0, 0);
-    espaceProjectif::rotation(matrixRotation, (m_angleY*M_PI/180 - ancienAngleY*M_PI/180), 0, 1, 0);
-    espaceProjectif::rotation(matrixRotation, (m_angleZ*M_PI/180 - ancienAngleZ*M_PI/180), 0, 0, 1);
+    espaceProjectif::rotation(matrixRotation, (degreeToRadian(m_angleX) - degreeToRadian(ancienAngleX)), 1, 0, 0);
+    espaceProjectif::rotation(matrixRotation, (degreeToRadian(m_angleY) - degreeToRadian(ancienAngleY)), 0, 1, 0);
+    espaceProjectif::rotation(matrixRotation, (degreeToRadian(m_angleZ) - degreeToRadian(ancienAngleZ)), 0, 0, 1);
     quatBegin = quaternion::rotationMatrixToQuaternion(matrixRotation);
 
     matrixRotation = espaceProjectif::identityMatrix4x4();
     quatEnd = quaternion::rotationMatrixToQuaternion(matrixRotation);
 
+    m_anim = 0;
     startQuaternion = true;
     update();
 }
@@ -101,6 +100,10 @@ void GLArea::processPositionQuat(){
     ancienPosX = m_posX;
     ancienPosY = m_posY;
     ancienPosZ = m_posZ;
+}
+
+double GLArea::degreeToRadian(double angle){
+    return angle*M_PI/180;
 }
 
 /* OPENGL AREA */
@@ -181,34 +184,25 @@ void GLArea::paintGL()
     matrix.frustum(-wr, wr, -hr, hr, 1.0, 10.0);
 
     espaceProjectif::translation(matrix, 0, 0, -3.0);
-    //matrix.translate(0, 0, -3.0);
 
     //mouvement dans la scène avec la souris
     espaceProjectif::translation(matrix, m_posX, m_posY, m_posZ);
 
     // Rotation de la scène pour l'animation avec ZQSD AE
-    espaceProjectif::rotation(matrix, m_angleX*M_PI/180, 1, 0, 0);
-    espaceProjectif::rotation(matrix, m_angleY*M_PI/180, 0, 1, 0);
-    espaceProjectif::rotation(matrix, m_angleZ*M_PI/180, 0, 0, 1);
-
-    //matrix.rotate(static_cast<float>(m_angle), 0, 1, 0);
-    //matrix.rotate(static_cast<float>(m_angle), 1, 0, 0);
-
+    espaceProjectif::rotation(matrix, degreeToRadian(m_angleX), 1, 0, 0);
+    espaceProjectif::rotation(matrix, degreeToRadian(m_angleY), 0, 1, 0);
+    espaceProjectif::rotation(matrix, degreeToRadian(m_angleZ), 0, 0, 1);
 
     //quaternion
-
     if(startQuaternion){
         QVector4D quatPosition = quaternion::slerp(quatBegin, quatEnd, m_anim);
         quaternion::quaternionToAxesAngle(quatAngle, quatX, quatY, quatZ, quatPosition);
-        espaceProjectif::translation(matrix, -(m_posX-ancienPosX)*m_anim, -(m_posY-ancienPosY)*m_anim, -(m_posZ-ancienPosZ)*m_anim);
+        espaceProjectif::translation(matrix, (ancienPosX-m_posX)*(1.0-m_anim), (ancienPosY-m_posY)*(1.0-m_anim), (ancienPosZ-m_posZ)*(1.0-m_anim));
+        matrix.rotate(quatAngle, quatX, quatY, quatZ);
 
-        if(m_anim >= 1){
+        if(m_anim >= 1)
             startQuaternion = false;
-            quatAngle = 0;
-        }
     }
-    matrix.rotate(quatAngle, quatX, quatY, quatZ);
-
 
     m_program->setUniformValue("matrix", matrix);
 
